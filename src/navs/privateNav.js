@@ -9,6 +9,7 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import RssFeedIcon from '@material-ui/icons/RssFeed';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AccountIcon from '@material-ui/icons/AccountCircle';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 /* import your desired icon from material-ui icons library */
 import {NavLink} from 'react-router-dom';
@@ -24,7 +25,12 @@ export const publicNavs = [
         url:'/profile',
         name:'Profile',
         icon:<AccountIcon />
-    }, 
+    },
+    {
+        url:'/invoices',
+        name:'Invoices',
+        icon:<DescriptionIcon />
+    },  
     {
         url:'/api_keys',
         name:'API Keys',
