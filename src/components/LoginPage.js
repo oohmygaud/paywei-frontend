@@ -46,9 +46,9 @@ export class LoginPage extends Component {
               Login
       </Typography>
           </div>
-          <Typography variant="headline" component="h3">
+          <h3>
             Login to your account
-        </Typography>
+        </h3>
           <form onSubmit={this.OnClickLogin}>
             <div className="loginformgroup">
 

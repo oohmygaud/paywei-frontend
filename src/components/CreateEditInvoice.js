@@ -115,11 +115,11 @@ export class CreateEditInvoice extends React.Component {
 
                             <FormGroup>
                                 <Typography id="discrete-slider" gutterBottom>
-                                    Minumun Payment Threshold
+                                    Minimum Payment Threshold: {this.state.min_payment_threshold}%
                                 </Typography>
                                 <Slider
                                     defaultValue={100}
-                                    getAriaValueText={valueText}
+                                    getAriaValueText={this.valueText}
                                     aria-labelledby="discrete-slider"
                                     valueLabelDisplay="auto"
                                     step={5}
@@ -127,7 +127,7 @@ export class CreateEditInvoice extends React.Component {
                                     min={5}
                                     max={100}
                                     margin="normal"
-                                    onChange={(e) => this.setState({ min_payment_threshold: e.target.value })}
+                                    onChange={(e, value) => this.setState({ min_payment_threshold: value })}
                                 />
                                 
                             </FormGroup>

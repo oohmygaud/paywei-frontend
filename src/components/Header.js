@@ -100,9 +100,9 @@ handleClose = event => {
           <IconButton className="iconbuttonsyle" color="inherit" aria-label="Menu" onClick={this.onLeftIconButtonClick}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="title" color="inherit" className="headertypoclass" >
+          <h2 variant="title" color="inherit" className="headertypoclass" >
             <Link to='/'>PayWei</Link>
-          </Typography>
+          </h2>
 
           <Typography>
             {this.props.username}

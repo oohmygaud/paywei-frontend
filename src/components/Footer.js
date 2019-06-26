@@ -3,15 +3,15 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 
-export default ()=>(
+export default () => (
 
-    <div className="footer-container-box">
+  <div className="footer-container-box">
 
-        <Typography variant="headline" gutterBottom>
-        NetProphet Technology
-      </Typography>
+    <h3>
+      NetProphet Technology
+    </h3>
 
-        
-        </div>
+
+  </div>
 
 );
