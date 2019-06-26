@@ -14,28 +14,40 @@ import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AppBar from '@material-ui/core/AppBar';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 
 class LandingPage extends React.Component {
   state = {
     tab: 0
   }
   render() {
+
     let heroStyle = {
-	background: palette.dark_purple
-    }
+      background: 'url(/gplaypattern.png'
+        }
 
-    return <div className="landingPagebodyComponent">
+    return <React.Fragment>
 
-      <br />
-      <div className="hero-image" style={heroStyle}>
-        <Grid container>
-          <Grid item lg={2}></Grid>
-          <Grid item lg={4} md={6} style={{ padding: '2em' }}>
-
-            <div className="hero-text">
-              <h1>Invoices</h1>
-              <p style={{ fontSize: 18 }}>Paywei is a SaaS for invoices.</p>
-              <Link to={'/learn_more'}>
+      <Grid 
+        container
+        spacing={16}
+        style={{ paddingTop: '6em', paddingBottom: '6em' }}
+        justify='center'
+      >
+        <Grid item xs={12} sm={4}>
+          <h1>
+            PayWei
+          </h1>
+          <h2>
+            <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />In full or in payments
+          </h2>
+          <h2>
+            <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />Invoice for any cryptocurrency
+          </h2>
+          <h2>
+            <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />Fast, easy, and immutable
+          </h2>
+          <Link to={'/learn_more'}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -50,23 +62,42 @@ class LandingPage extends React.Component {
                   color="secondary"
                   style={{ marginLeft: '1em', marginTop: '2em' }}
                 >
-                  Try PayWei Now
+                  Register
         </Button>
               </Link>
-            </div>
-
-          </Grid>
-          <Grid item lg={4} md={6} style={{ padding: '2em', overflow: 'hidden' }}>
-
-          </Grid>
-          <Grid item lg={2}></Grid>
         </Grid>
+
+        <Grid item xs={12} sm={4} style={{ background:"url(/gplaypattern.png)" }}>
+          
+        </Grid>
+      </Grid>
+
+    <div style={heroStyle}>
+      <Grid 
+        container
+        spacing={16}
+        style={{ paddingTop: '6em', paddingBottom: '6em'}}
+        justify='center'
+      >
+        <Grid item xs={12} sm={4}>
+          
+          </Grid>
+
+        <Grid item xs={12} sm={4}>
+          <h1 style={{ textAlign: 'center'}}>
+            PayWei
+          </h1>
+          
+        </Grid>
+
+        
+      </Grid>
       </div>
 
 
 
-      <Grid container>
-        <Grid item sm={4} style={{ padding: '3em', textAlign: 'center' }}>
+      <Grid container spacing={8} justify="center">
+        <Grid item sm={3} style={{ textAlign: 'center' }}>
           <div>
             <WebIcon style={{ fontSize: 100 }} />
             <h3>
@@ -77,7 +108,7 @@ class LandingPage extends React.Component {
           </p>
           </div>
         </Grid>
-        <Grid item sm={4} style={{ padding: '3em', textAlign: 'center' }}>
+        <Grid item sm={3} style={{ textAlign: 'center' }}>
           <div>
             <ChildFriendlyIcon style={{ fontSize: 100 }} />
             <h3>
@@ -88,7 +119,7 @@ class LandingPage extends React.Component {
           </p>
           </div>
         </Grid>
-        <Grid item sm={4} style={{ padding: '3em', textAlign: 'center' }}>
+        <Grid item sm={3} style={{ textAlign: 'center' }}>
           <div>
             <MoneyOffIcon style={{ fontSize: 100 }} />
             <h3>
@@ -101,7 +132,7 @@ class LandingPage extends React.Component {
         </Grid>
       </Grid>
 
-    </div>
+    </React.Fragment>
 
   }
 }

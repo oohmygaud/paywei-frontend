@@ -16,6 +16,7 @@ import ProfilePage from '../components/ProfilePage';
 import Registration from '../components/Registration';
 import LearnMore from '../components/LearnMore';
 import InvoiceList from '../components/InvoiceList';
+import InvoiceDetail from '../components/InvoiceDetail';
 import CreateEditInvoice from '../components/CreateEditInvoice';
 
 
@@ -34,6 +35,7 @@ const AppRouter = ({history}) => (
          <PrivateRoute path="/api_keys" component={APIKeyPage} />
          <PrivateRoute path="/invoices/:id/edit" component={CreateEditInvoice} />
          <PrivateRoute path="/invoices/create" component={CreateEditInvoice} />
+         <PrivateRoute path="/invoices/:id" component={InvoiceDetail} />
          
          <PrivateRoute path="/invoices" component={InvoiceList} />
          

@@ -15,9 +15,9 @@ export class CreateEditInvoice extends React.Component {
         recipient_address: "",
         payee: "",
         description: "",
-        due_date: "",
+        due_date: null,
         total_wei_due: "",
-        min_payment_threshold: ""
+        min_payment_threshold: 100
     }
 
     OnSubmit(e) {
@@ -69,6 +69,15 @@ export class CreateEditInvoice extends React.Component {
                                 defaultValue={this.state.nickname}
                                 label="Nickname"
                                 onChange={(e) => this.setState({ nickname: e.target.value })}
+                            />
+                        </FormGroup>
+                        <FormGroup row>
+                            <TextField
+                                id="total_wei_due"
+                                defaultValue={this.state.total_wei_due}
+                                type="number"
+                                label="Total Wei Due"
+                                onChange={(e) => this.setState({ total_wei_due: e.target.value })}
                             />
                         </FormGroup>
 
