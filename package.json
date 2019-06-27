@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js --port 9090",
     "sync": "aws s3 sync --acl public-read public/ s3://txgun.io",
     "invalidate": "aws cloudfront create-invalidation --distribution-id EL0A14GZ0RF4B --paths='/*'",
     "deploy": "npm run build && npm run sync && npm run invalidate"

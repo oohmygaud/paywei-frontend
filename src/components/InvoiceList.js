@@ -40,11 +40,10 @@ class InvoiceList extends React.Component {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Nickname</TableCell>
-                            <TableCell>Recipient Email</TableCell>
-                            <TableCell>Total Due</TableCell>
+                            <TableCell>Title</TableCell>
                             <TableCell>Due Date</TableCell>
                             <TableCell>Status</TableCell>
+                            <TableCell>Total Due</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -55,14 +54,8 @@ class InvoiceList extends React.Component {
                                         style={{ color: 'blue' }}
                                         to={'/invoices/' + invoice.id}
                                     >
-                                        {invoice.nickname}
+                                        {invoice.title}
                                     </Link>
-                                </TableCell>
-                                <TableCell>
-                                    {invoice.recipient_email}
-                                </TableCell>
-                                <TableCell>
-                                    {invoice.total_wei_due} WEI
                                 </TableCell>
                                 <TableCell>
                                     {invoice.due_date}
@@ -70,7 +63,9 @@ class InvoiceList extends React.Component {
                                 <TableCell>
                                     {invoice.status}
                                 </TableCell>
-
+                                <TableCell>
+                                    {invoice.total_wei_due} WEI
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

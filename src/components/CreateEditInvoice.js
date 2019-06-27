@@ -14,10 +14,10 @@ import Slider from '@material-ui/lab/Slider';
 
 export class CreateEditInvoice extends React.Component {
     state = {
-        nickname: "",
-        recipient_address: "",
+        title: "",
+        recipient_email: "",
         payee: "",
-        description: "",
+        notes: "",
         due_date: null,
         total_wei_due: "",
         min_payment_threshold: 100
@@ -54,7 +54,8 @@ export class CreateEditInvoice extends React.Component {
         if (nextProps.invoice && nextProps.invoice.id != state.id
             && nextProps.invoice.id == nextProps.match.params.id) {
             return {
-                ...nextProps.invoice
+                ...nextProps.invoice,
+                due_date: new Date(nextProps.invoice.due_date)
             };
         }
         else {
@@ -81,23 +82,23 @@ export class CreateEditInvoice extends React.Component {
 
                             <FormGroup >
                                 <TextField
-                                    id="nickname"
-                                    defaultValue={this.state.nickname}
+                                    id="title"
+                                    defaultValue={this.state.title}
                                     variant="outlined"
                                     margin="normal"
-                                    label="Nickname"
-                                    onChange={(e) => this.setState({ nickname: e.target.value })}
+                                    label="Title"
+                                    onChange={(e) => this.setState({ title: e.target.value })}
                                 />
                             </FormGroup>
 
                             <FormGroup >
                                 <TextField
-                                    id="recipient_address"
+                                    id="recipient_email"
                                     variant="outlined"
                                     margin="normal"
-                                    defaultValue={this.state.recipient_address}
-                                    label="Recipient Address"
-                                    onChange={(e) => this.setState({ recipient_address: e.target.value })}
+                                    defaultValue={this.state.recipient_email}
+                                    label="Recipient Email"
+                                    onChange={(e) => this.setState({ recipient_email: e.target.value })}
                                 />
                             </FormGroup>
 
@@ -149,12 +150,12 @@ export class CreateEditInvoice extends React.Component {
                             </FormGroup>
                             <FormGroup>
                                 <TextField
-                                    id="description"
-                                    defaultValue={this.state.description}
-                                    label="Description"
+                                    id="notes"
+                                    defaultValue={this.state.notes}
+                                    label="Notes"
                                     variant="outlined"
                                     margin="normal"
-                                    onChange={(e) => this.setState({ description: e.target.value })}
+                                    onChange={(e) => this.setState({ notes: e.target.value })}
                                 />
                             </FormGroup>
 
