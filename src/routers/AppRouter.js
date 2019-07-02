@@ -1,13 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom';
 import LandingPage from '../components/LandingPage';
-
-import HomePage from '../components/HomePage';
+import Dashboard from '../components/Dashboard';
 import NotFoundPage from '../components/NotFoundPage';
 import PublicRoute from './PublicRouter';
 import PrivateRoute from './PrivateRouter';
 import LoginPage from '../components/LoginPage';
-
 import { ConnectedRouter } from 'connected-react-router'
 import APIKeyPage from '../components/APIKeyPage';
 import APIKeyDetail from '../components/APIKeyDetail';
@@ -18,6 +16,7 @@ import LearnMore from '../components/LearnMore';
 import InvoiceList from '../components/InvoiceList';
 import InvoiceDetail from '../components/InvoiceDetail';
 import CreateEditInvoice from '../components/CreateEditInvoice';
+import MakePaymentPage from '../components/MakePaymentPage';
 
 
 const AppRouter = ({history}) => (
@@ -28,13 +27,14 @@ const AppRouter = ({history}) => (
         
         <PublicRoute path="/" component={LandingPage} exact={true} />
         <PublicRoute path="/registration" component={Registration} exact={true} />
-         <PrivateRoute path="/home" component={HomePage} />
+         <PrivateRoute path="/dashboard" component={Dashboard} />
+         <PrivateRoute path="/pay/:id" component={MakePaymentPage} />
          <PrivateRoute path="/profile" component={ProfilePage} />
          <PrivateRoute path="/api_keys/create" component={CreateAPIKey} />
          <PrivateRoute path="/api_keys/:id" component={APIKeyDetail} />
          <PrivateRoute path="/api_keys" component={APIKeyPage} />
          <PrivateRoute path="/invoices/:id/edit" component={CreateEditInvoice} />
-         <PrivateRoute path="/invoices/create" component={CreateEditInvoice} />
+         <PrivateRoute path="/send_invoice" component={CreateEditInvoice} />
          <PrivateRoute path="/invoices/:id" component={InvoiceDetail} />
          
          <PrivateRoute path="/invoices" component={InvoiceList} />

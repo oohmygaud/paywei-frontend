@@ -10,16 +10,21 @@ import RssFeedIcon from '@material-ui/icons/RssFeed';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
-
+import DraftsIcon from '@material-ui/icons/Drafts'
 /* import your desired icon from material-ui icons library */
 import {NavLink} from 'react-router-dom';
 
 
 export const publicNavs = [
     {
-        url:'/home',
+        url:'/dashboard',
         name:'Dashboard',
         icon:<HomeIcon/>
+    },
+    {
+        url:'/send_invoice',
+        name:'Send an Invoice',
+        icon:<DraftsIcon />
     },
     {
         url:'/profile',

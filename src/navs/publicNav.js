@@ -12,7 +12,7 @@ import {NavLink} from 'react-router-dom';
 
 export const publicNavs = [
     {
-        url:'/home',
+        url:'/',
         name:'Home',
         icon:<HomeIcon/>
     },

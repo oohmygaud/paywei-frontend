@@ -11,8 +11,15 @@ import Grid from '@material-ui/core/Grid';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Slider from '@material-ui/lab/Slider';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import FormControl from '@material-ui/core/FormControl';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import palette from '../theme/palette'
 
-export class CreateEditInvoice extends React.Component {
+class CreateEditInvoice extends React.Component {
     state = {
         title: "",
         recipient_email: "",
@@ -20,13 +27,19 @@ export class CreateEditInvoice extends React.Component {
         notes: "",
         due_date: null,
         total_wei_due: "",
-        min_payment_threshold: 100
+        min_payment_threshold: 100,
+        delivery: "email"
     }
 
 
 
     handleDateChange(date) {
         this.setState({ due_date: date })
+    }
+
+    handleSendOption(event) {
+        this.setState({ delivery: event.target.value })
+
     }
 
     valueText(value) {
@@ -44,6 +57,8 @@ export class CreateEditInvoice extends React.Component {
             console.log('Creating', form_data)
             this.props.createInvoice(form_data);
         }
+
+
     };
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -75,10 +90,22 @@ export class CreateEditInvoice extends React.Component {
             return <Typography>Loading...</Typography>
 
         return <React.Fragment>
-            <Grid container justify="center">
+            <Grid container justify="center" spacing={4} alignItems='center'>
                 <Grid item xs={12} md={6} lg={3} >
                     <form onSubmit={(e) => this.onSubmit(e)}>
                         <Card style={{ padding: '1em' }}>
+
+                            <FormControl variant="outlined">
+                                <Select
+                                    value={this.state.delivery}
+                                    onChange={(e) => this.handleSendOption(e)}
+                                    input={<OutlinedInput name="delivery" />}
+                                >
+
+                                    <MenuItem value={'email'}>Send as an Email</MenuItem>
+                                    <MenuItem value={'link'}>Send as a Link</MenuItem>
+                                </Select>
+                            </FormControl>
 
                             <FormGroup >
                                 <TextField
@@ -130,7 +157,7 @@ export class CreateEditInvoice extends React.Component {
                                     margin="normal"
                                     onChange={(e, value) => this.setState({ min_payment_threshold: value })}
                                 />
-                                
+
                             </FormGroup>
                             <FormGroup row>
                                 <DatePicker
@@ -174,6 +201,19 @@ export class CreateEditInvoice extends React.Component {
                         </Card>
                     </form>
                 </Grid>
+                { true || this.props.created && this.props.created.delivery == 'link' ?
+                    <Grid item xs={12} md={6} lg={3} style={{  }}>
+                        <Card style={{ padding: '1em'}} style={{background: palette.blue, padding: '1em', textAlign: 'center'}}>
+                            <h2 style={{color: 'white'}}>Copy the link & Send your invoice!</h2>
+                            <h4 style={{display: 'inline-block', color: 'white'}}>https://PayWei.co/pay/1234567</h4>
+                            <br />
+                            <Button color='primary' variant='contained' style={{margin:'1.5em'}}>
+                                <FileCopyIcon />
+                            </Button>
+                        </Card>
+                    </Grid>
+
+                    : null}
             </Grid>
         </React.Fragment >
 
@@ -185,7 +225,8 @@ export class CreateEditInvoice extends React.Component {
 const mapStateToProps = (state) => ({
     user: state.auth.user,
     user_id: state.auth.user_id,
-    invoice: state.invoices.detail
+    invoice: state.invoices.detail,
+    created: state.invoices.created
 });
 
 const mapDispatchToProps = (dispatch) => ({

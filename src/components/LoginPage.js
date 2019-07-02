@@ -32,7 +32,7 @@ export class LoginPage extends Component {
   render() {
     if (this.props.username) {
       console.log('already logged in')
-      this.props.history.push('/home');
+      this.props.history.push('/dashboard');
     }
 
     return (
@@ -42,9 +42,9 @@ export class LoginPage extends Component {
 
         <Paper className="loginPaper">
           <div className="loginheaderpart">
-            <Typography variant="display3" gutterBottom className="loginpageheader">
+            <h3 className="loginpageheader">
               Login
-      </Typography>
+      </h3>
           </div>
           <h3>
             Login to your account

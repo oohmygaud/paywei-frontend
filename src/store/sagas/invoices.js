@@ -21,7 +21,8 @@ function* createInvoice(action) {
         const api = getApi()
         const response = yield call(api.post, 'invoices/', action.data)
         yield put({ type: "CREATE_INVOICE_SUCCEEDED", data: response.data })
-        yield put(push('/invoices/'+response.data.id))
+        if (response.data.delivery == "email")
+            yield put(push('/invoices/'+response.data.id))
     }
     catch (e) {
         console.log('Error creating invoice', e)

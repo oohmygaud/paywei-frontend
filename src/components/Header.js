@@ -101,7 +101,7 @@ handleClose = event => {
             <MenuIcon />
           </IconButton>
           <h2 variant="title" color="inherit" className="headertypoclass" >
-            <Link to='/'>PayWei</Link>
+            <Link to='/dashboard'>PayWei</Link>
           </h2>
 
           <Typography>

@@ -26,14 +26,14 @@ class InvoiceList extends React.Component {
         return <React.Fragment>
             <Grid container>
                 <Grid item sm xs={12} style={{ marginTop: '1em' }}>
-                    <Link to={'/'}><Button>Back to Dashboard</Button></Link>
+                    <Link to={'/dashboard'}><Button>Back to Dashboard</Button></Link>
                 </Grid>
                 <Grid item sm={6} xs={12} style={{ marginTop: '1em', textAlign: 'center' }}>
                     <h2>Invoices</h2>
                 </Grid>
                 <Grid item sm xs={4} style={{ marginTop: '1em', textAlign: "right" }}>
-                    <Link to="/invoices/create">
-                        <Button>Create</Button></Link>
+                    <Link to="/send_invoice">
+                        <Button>Send an Invoice</Button></Link>
                 </Grid>
             </Grid>
             <Card>
@@ -42,6 +42,7 @@ class InvoiceList extends React.Component {
                         <TableRow>
                             <TableCell>Title</TableCell>
                             <TableCell>Due Date</TableCell>
+                            <TableCell>Payment</TableCell>
                             <TableCell>Status</TableCell>
                             <TableCell>Total Due</TableCell>
                         </TableRow>
@@ -59,6 +60,11 @@ class InvoiceList extends React.Component {
                                 </TableCell>
                                 <TableCell>
                                     {invoice.due_date}
+                                </TableCell>
+                                <TableCell>
+                                    <Link to={"/pay/" + invoice.id}>
+                                        <Button>Make a Payment</Button>
+                                    </Link>
                                 </TableCell>
                                 <TableCell>
                                     {invoice.status}
