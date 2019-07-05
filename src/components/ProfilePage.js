@@ -11,7 +11,7 @@ import Switch from '@material-ui/core/Switch';
 
 class ProfilePage extends React.Component {
     state = {
-        disable_balance_warning_emails: false
+        
     }
 
     componentWillMount() {
@@ -59,6 +59,7 @@ class ProfilePage extends React.Component {
                         <TextField id="email"
                             label="Email"
                             defaultValue={this.props.user.email}
+                            disabled
                             onChange={(e) => this.setState({ email: e.target.value })} />
                     </FormGroup>
                     <FormGroup row>
@@ -83,9 +84,7 @@ class ProfilePage extends React.Component {
                         color="primary"
                         onClick={this.OnSubmit}>
 
-                        <Typography variant="button" gutterBottom className="logintypography">
-                            Update
-                    </Typography>
+                        Update
                     </Button>
                 </form>
             </Card>

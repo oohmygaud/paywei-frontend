@@ -30,6 +30,11 @@ export default (state = {}, action) => {
             console.log('Profile Edited');
             return { ...state, edit_profile_succeeded: true}
 
+        case 'EDIT_PROFILE_DENIED':
+            console.log('Edit Profile Denied');
+            return { ...state, edit_profile_errors: action.errors, edit_profile_succeeded: false}
+    
+
         case 'LOAD_WHITELIST_SUCCEEDED':
             console.log('Loaded Whitelist');
             return { ...state, whitelist: action.data }

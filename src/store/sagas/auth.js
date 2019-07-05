@@ -72,12 +72,18 @@ function* editProfile(action) {
         const api = getApi()
         const response = yield call(api.put, 'accounts/profile/', action.data)
         yield put({ type: "EDIT_PROFILE_SUCCEEDED", data: response.data })
-        yield put(push('/home'))
+        yield put(push('/dashboard'))
         yield put({ type: 'GET_PROFILE' })
 
     }
     catch (e) {
-        console.log('Error editing profile', e)
+        console.log('Error editing profile', e, e.response, e.message)
+        if(e.response)
+            yield put({ type: "EDITING_PROFILE_DENIED", errors: e.response.data });
+        else if (e.message)
+            yield put({ type: "EDITING_PROFILE_DENIED", errors: {'message': e.message} });
+
+
     }
 }
 
@@ -98,13 +104,7 @@ function* doRefreshToken(action) {
 function* register(action) {
     try {
         const api = getApi();
-        const response = yield call(api.post, '/accounts/register/', 
-            {
-                username: action.username,
-                email: action.email,
-                password: action.password,
-                password_confirm: action.password_confirm
-            },
+        const response = yield call(api.post, '/accounts/register/', action.form_data,
         )
         if (response.status == 201) {
             console.log('registration succeeded', response.data)

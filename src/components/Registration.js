@@ -14,22 +14,34 @@ class Registration extends React.Component {
         const form_data = { ...this.state, };
 
         console.log('Registering', form_data)
-        this.props.register(form_data.username, form_data.email, form_data.password, form_data.password_confirm);
+        this.props.register(form_data);
     };
 
     showErrors(name) {
-        return (this.props.errors && this.props.errors[name] && 
-         this.props.errors[name].map(error=> (
-            <div value={error} key={error}>
-                <em>{error}</em>
-            </div> 
-        )))
+        return (this.props.errors && this.props.errors[name] &&
+            this.props.errors[name].map(error => (
+                <div value={error} key={error}>
+                    <em>{error}</em>
+                </div>
+            )))
     }
 
     render() {
         return <React.Fragment>
             <Card>
                 <form onSubmit={this.onSubmit}>
+                    <FormGroup row>
+                        <TextField id="first_name"
+                            label="First Name"
+                            type="first_name"
+                            onChange={(e) => this.setState({ first_name: e.target.value })} />
+                    </FormGroup>
+                    <FormGroup row>
+                        <TextField id="last_name"
+                            label="Last Name"
+                            type="last_name"
+                            onChange={(e) => this.setState({ last_name: e.target.value })} />
+                    </FormGroup>
                     <FormGroup row>
                         <TextField id="email"
                             label="Email"
@@ -58,13 +70,13 @@ class Registration extends React.Component {
                     {this.showErrors('password_confirm')}
                     {this.showErrors('non_field_errors')}
                     <Button type="submit"
-                            variant="contained"
-                            color="primary"
-                            onClick={this.OnSubmit}>
-                            <Typography variant="button" gutterBottom className="logintypography">
-                                Register
+                        variant="contained"
+                        color="primary"
+                        onClick={this.OnSubmit}>
+                        <Typography variant="button" gutterBottom className="logintypography">
+                            Register
                             </Typography>
-                        </Button>
+                    </Button>
                 </form>
             </Card>
         </React.Fragment>
@@ -76,7 +88,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    register: (username, email, password, password_confirm) => dispatch(register(username, email, password, password_confirm)),
+    register: (data) => dispatch(register(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Registration);

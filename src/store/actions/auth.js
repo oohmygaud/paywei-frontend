@@ -41,12 +41,9 @@ export const doRefreshToken =()=>({
     type:'DO_REFRESH_TOKEN',
 });
 
-export const register = (username, email, password, password_confirm) => ({
+export const register = (form_data) => ({
     type: "REGISTER",
-    username,
-    email,
-    password,
-    password_confirm
+    form_data
 });
 
 export const loadWhitelist = () => ({
