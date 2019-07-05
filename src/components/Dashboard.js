@@ -1,6 +1,4 @@
 import React from 'react';
-import CanvasJSReact from '../canvasjs.react';
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 import Grid from '@material-ui/core/Grid';
 import { ResponsivePie } from '@nivo/pie'
 import { ResponsiveBar } from '@nivo/bar'

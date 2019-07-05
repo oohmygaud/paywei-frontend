@@ -30,7 +30,7 @@ class LandingPage extends React.Component {
 
       <Grid 
         container
-        spacing={16}
+        spacing={4}
         style={{ paddingTop: '6em', paddingBottom: '6em' }}
         justify='center'
       >
@@ -75,7 +75,7 @@ class LandingPage extends React.Component {
     <div style={heroStyle}>
       <Grid 
         container
-        spacing={16}
+        spacing={4}
         style={{ paddingTop: '6em', paddingBottom: '6em'}}
         justify='center'
       >

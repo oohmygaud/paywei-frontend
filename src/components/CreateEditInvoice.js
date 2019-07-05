@@ -1,5 +1,6 @@
 import React from 'react';
 import { editInvoice, createInvoice } from '../store/actions/invoices';
+import { loadWhitelist } from '../store/actions/auth';
 import { loadInvoiceDetail, archiveInvoice, unarchiveInvoice } from '../store/actions/invoices';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -23,7 +24,7 @@ class CreateEditInvoice extends React.Component {
     state = {
         title: "",
         recipient_email: "",
-        payee: "",
+        pay_to: "",
         notes: "",
         due_date: null,
         total_wei_due: "",
@@ -40,6 +41,11 @@ class CreateEditInvoice extends React.Component {
     handleSendOption(event) {
         this.setState({ delivery: event.target.value })
 
+    }
+
+    handleAddressChange(event) {
+        console.log(event)
+        this.setState({ pay_to: event.target.value })
     }
 
     valueText(value) {
@@ -81,16 +87,19 @@ class CreateEditInvoice extends React.Component {
 
     componentDidMount() {
         this.props.clearDetails()
+        this.props.loadWhitelist()
         if (this.props.match.params.id)
             this.props.loadInvoiceDetail(this.props.match.params.id)
+        
     }
 
     render() {
-        if (!this.props.invoice && this.props.match.params.id)
+        if (!this.props.whitelist || (!this.props.invoice && this.props.match.params.id))
             return <Typography>Loading...</Typography>
+        let exists = this.props.created || this.props.invoice;
 
         return <React.Fragment>
-            <Grid container justify="center" spacing={4} alignItems='center'>
+            <Grid container justify="center" spacing={4} alignItems='center' style={{ margin: '0.5em'}}>
                 <Grid item xs={12} md={6} lg={3} >
                     <form onSubmit={(e) => this.onSubmit(e)}>
                         <Card style={{ padding: '1em' }}>
@@ -117,6 +126,22 @@ class CreateEditInvoice extends React.Component {
                                     onChange={(e) => this.setState({ title: e.target.value })}
                                 />
                             </FormGroup>
+
+                            <FormControl margin="normal" variant="outlined" style={{ display: 'flex' }}>
+                                <InputLabel>
+                                    Pay To
+                                </InputLabel>
+                                <Select
+                                    value={this.state.pay_to}
+                                    onChange={(e) => this.handleAddressChange(e)}
+                                    input={<OutlinedInput labelWidth={50} name="pay_to" id="pay_to" />}
+                                >
+                                    {this.props.whitelist.results.map(entry => (
+                                        <MenuItem key={entry.id} value={entry.id}>{entry.nickname} - {entry.address}</MenuItem>
+                                    ))}
+                                    
+                                </Select>
+                            </FormControl>
 
                             <FormGroup >
                                 <TextField
@@ -201,13 +226,13 @@ class CreateEditInvoice extends React.Component {
                         </Card>
                     </form>
                 </Grid>
-                { true || this.props.created && this.props.created.delivery == 'link' ?
-                    <Grid item xs={12} md={6} lg={3} style={{  }}>
-                        <Card style={{ padding: '1em'}} style={{background: palette.blue, padding: '1em', textAlign: 'center'}}>
-                            <h2 style={{color: 'white'}}>Copy the link & Send your invoice!</h2>
-                            <h4 style={{display: 'inline-block', color: 'white'}}>https://PayWei.co/pay/1234567</h4>
+                {exists && exists.delivery == 'link' ?
+                    <Grid item xs={12} md={6} lg={3} >
+                        <Card style={{ padding: '1em' }} style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
+                            <h2 style={{ color: 'white' }}>Copy the link & Send your invoice!</h2>
+                            <h4 style={{ display: 'inline-block', color: 'white' }}>https://PayWei.co/pay/{exists.id}</h4>
                             <br />
-                            <Button color='primary' variant='contained' style={{margin:'1.5em'}}>
+                            <Button color='primary' variant='contained' style={{ margin: '1.5em' }}>
                                 <FileCopyIcon />
                             </Button>
                         </Card>
@@ -226,7 +251,8 @@ const mapStateToProps = (state) => ({
     user: state.auth.user,
     user_id: state.auth.user_id,
     invoice: state.invoices.detail,
-    created: state.invoices.created
+    created: state.invoices.created,
+    whitelist: state.auth.whitelist
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -236,6 +262,7 @@ const mapDispatchToProps = (dispatch) => ({
     unarchive: (id) => dispatch(unarchiveInvoice(id)),
     loadInvoiceDetail: (id) => dispatch(loadInvoiceDetail(id)),
     clearDetails: () => dispatch({ type: 'CLEAR_INVOICE_DETAILS' }),
+    loadWhitelist: () => dispatch(loadWhitelist())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEditInvoice);

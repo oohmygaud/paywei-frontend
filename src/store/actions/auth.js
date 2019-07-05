@@ -48,3 +48,7 @@ export const register = (username, email, password, password_confirm) => ({
     password,
     password_confirm
 });
+
+export const loadWhitelist = () => ({
+    type: 'LOAD_WHITELIST',
+});

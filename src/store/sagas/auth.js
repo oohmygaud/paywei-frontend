@@ -115,12 +115,24 @@ function* register(action) {
         else
             yield put({ type: "REGISTRATION_DENIED", errors: response.data });
     } catch(e) {
-        console.log('Error registering new user', e.response.data)
+        console.log('Error registering new user', e)
         yield put({ type: "REGISTRATION_DENIED", errors: e.response.data });
     }
 }
 
-
+function* loadWhitelist(action) {
+    console.log('loading whitelist')
+    try {
+        const api = getApi()
+        let url = 'whitelist_addresses/?';
+        const response = yield call(api.get, url)
+        yield put({ type: "LOAD_WHITELIST_SUCCEEDED", data: response.data })
+    }
+    catch (e) {
+        console.log('Error loading whitelist addresses', e)
+    }
+    
+}
 
 
 function* authSaga() {
@@ -130,6 +142,7 @@ function* authSaga() {
     yield takeLatest("DO_REFRESH_TOKEN", doRefreshToken);
     yield takeLatest("REGISTER", register);
     yield takeLatest("EDIT_PROFILE", editProfile);
+    yield takeLatest("LOAD_WHITELIST", loadWhitelist);
 }
 
 export default authSaga;

@@ -20,7 +20,7 @@ export default (state = {}, action) => {
 
         case 'REGISTRATION_SUCCEEDED':
             console.log('Welcome');
-            return { ...state, username: action.username, user_id: action.user_id };
+            return { ...state };
 
         case 'REGISTRATION_DENIED':
             console.log('Registration Denied');
@@ -29,6 +29,10 @@ export default (state = {}, action) => {
         case 'EDIT_PROFILE_SUCCEEDED':
             console.log('Profile Edited');
             return { ...state, edit_profile_succeeded: true}
+
+        case 'LOAD_WHITELIST_SUCCEEDED':
+            console.log('Loaded Whitelist');
+            return { ...state, whitelist: action.data }
 
         default: return state;
     }
