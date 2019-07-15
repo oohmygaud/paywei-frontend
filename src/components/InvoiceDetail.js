@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { loadInvoiceDetail } from '../store/actions/invoices';
+import { loadInvoiceDetail, editInvoice } from '../store/actions/invoices';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
@@ -11,11 +11,81 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import palette from '../theme/palette'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+
+
+let StatusCard = ({ invoice, publishNow }) => {
+    if (invoice.delivery == 'email' && invoice.status == 'new')
+        return <Card style={{ padding: '1em' }} style={{ background: palette.orange, padding: '1em', textAlign: 'center' }}>
+            <h2 style={{ color: 'white' }}>DRAFT</h2>
+
+            <h4 style={{ display: 'inline-block', color: 'white' }}>Not yet delivered to {invoice.recipient_email}</h4>
+            <Button
+                style={{ marginTop: "1em" }}
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={publishNow}>
+                <Typography variant="button" gutterBottom className="logintypography">
+                    Send Now
+                </Typography>
+            </Button>
+        </Card>
+
+    if (invoice.delivery == 'email' && invoice.status == 'published')
+        return <Card style={{ padding: '1em' }} style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
+            <h2 style={{ color: 'white' }}>SENT</h2>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>Your invoice has been sent to {invoice.recipient_email}</h4>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>Copy link here: <br />https://PayWei.co/pay/{invoice.id}</h4>
+            <CopyToClipboard
+                text={'https://PayWei.co/pay/' + invoice.id}
+                onCopy={() => this.setState({ copied: true })}>
+                <Button color='primary' variant='contained' style={{ margin: '1.5em' }}>
+                    <FileCopyIcon />
+                </Button>
+            </CopyToClipboard>
+        </Card>
+
+    if (invoice.delivery == 'link' && invoice.status == 'new')
+        return <Card style={{ padding: '1em' }} style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
+            <h2 style={{ color: 'white' }}>Copy the link & Send your invoice!</h2>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>https://PayWei.co/pay/{invoice.id}</h4>
+            <br />
+            <CopyToClipboard
+                text={'https://PayWei.co/pay/' + invoice.id}
+                onCopy={() => this.setState({ copied: true })}>
+                <Button color='primary' variant='contained' style={{ margin: '1.5em' }}>
+                    <FileCopyIcon />
+                </Button>
+            </CopyToClipboard>
+        </Card>
+
+    if (invoice.status == 'agreed')
+        return <Card style={{ padding: '1em' }} style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
+            <h2 style={{ color: 'white' }}>AGREED</h2>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>Cannot make changes to this invoice.</h4>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>Copy link here: <br />https://PayWei.co/pay/{invoice.id}</h4>
+            <CopyToClipboard
+                text={'https://PayWei.co/pay/' + invoice.id}
+                onCopy={() => this.setState({ copied: true })}>
+                <Button color='primary' variant='contained' style={{ margin: '1.5em' }}>
+                    <FileCopyIcon />
+                </Button>
+            </CopyToClipboard>
+        </Card>
+
+}
 
 class InvoiceDetail extends React.Component {
 
     componentWillMount() {
         this.props.loadInvoiceDetail(this.props.match.params.id)
+    }
+
+    publishNow() {
+        this.props.editInvoice(this.props.match.params.id, { ...this.props.invoice, status: 'published' })
     }
 
     render() {
@@ -33,18 +103,21 @@ class InvoiceDetail extends React.Component {
                 </Grid>
 
                 <Grid item sm xs={4} style={{ marginTop: '1em', textAlign: "right" }}>
-                    <Link to={'/invoices/' + this.props.invoice.id + '/edit'}>
-                        <Button color="primary">Edit Invoice</Button>
-                    </Link>
+                    {this.props.invoice.status != 'agreed' ?
+                        <Link to={'/invoices/' + this.props.invoice.id + '/edit'}>
+                            <Button color="primary">Edit Invoice</Button>
+                        </Link> : null
+                    }
+
                 </Grid>
             </Grid>
-            <Grid container justify="center"  >
+            <Grid container justify="center" alignItems='center' >
                 <Grid item xs={12} md={6} lg={4} style={{ textAlign: 'center', padding: '2em' }}>
                     <Card>
                         <h2>{this.props.invoice.title} Details</h2>
                         <Grid container style={{ textAlign: 'center', paddingTop: '2em' }}>
                             <Grid item xs={4} >
-                                {this.props.invoice.total_wei_due}
+                                {this.props.invoice.invoice_amount_wei}
                             </Grid>
                             <Grid item xs={4} >
                                 12
@@ -65,33 +138,37 @@ class InvoiceDetail extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid container style={{ padding: '2em' }}>
-                            <Table> 
+                            <Table>
                                 <TableBody>
-                                        <TableRow>
-                                            <TableCell>Status</TableCell>
-                                            <TableCell>{this.props.invoice.status}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>Confirmations</TableCell>
-                                            <TableCell>1</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>Currency</TableCell>
-                                            <TableCell>ETH</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>Created At</TableCell>
-                                            <TableCell>{this.props.invoice.created_at}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>Notes</TableCell>
-                                            <TableCell>{this.props.invoice.notes}</TableCell>
-                                        </TableRow>      
+                                    <TableRow>
+                                        <TableCell>Status</TableCell>
+                                        <TableCell>{this.props.invoice.status}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Confirmations</TableCell>
+                                        <TableCell>1</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Currency</TableCell>
+                                        <TableCell>ETH</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Created At</TableCell>
+                                        <TableCell>{this.props.invoice.created_at}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Notes</TableCell>
+                                        <TableCell>{this.props.invoice.notes}</TableCell>
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </Grid>
 
                     </Card>
+                </Grid>
+                <Grid item xs={12} md={6} lg={3} >
+                    <StatusCard invoice={this.props.invoice} publishNow={() => this.publishNow()} />
+
                 </Grid>
             </Grid>
 
@@ -104,7 +181,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    loadInvoiceDetail: (id) => dispatch(loadInvoiceDetail(id))
+    loadInvoiceDetail: (id) => dispatch(loadInvoiceDetail(id)),
+    editInvoice: (id, data) => dispatch(editInvoice(id, data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvoiceDetail);

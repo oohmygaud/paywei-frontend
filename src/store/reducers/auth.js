@@ -39,6 +39,10 @@ export default (state = {}, action) => {
             console.log('Loaded Whitelist');
             return { ...state, whitelist: action.data }
 
+        case 'ADD_WHITELIST_ADDRESS_SUCCEEDED':
+            console.log('Added Whitelist Address');
+            return { ...state, address: action.data }
+
         default: return state;
     }
 };

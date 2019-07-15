@@ -6,7 +6,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Card from '@material-ui/core/Card';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
-import { loadInvoiceDetail } from '../store/actions/invoices';
+import { loadInvoiceDetail, agreeToInvoice } from '../store/actions/invoices';
 import getWeb3 from "../utils/getWeb3";
 import PaymentContract from "../utils/Payment.json";
 
@@ -28,8 +28,9 @@ class MakePaymentPage extends React.Component {
     onSubmit = async (e) => {
         e.preventDefault();
         console.log('onSubmit')
+        this.props.agreeToInvoice(this.props.match.params.id)
         const BN = this.state.web3.utils.BN;
-        const bill = new BN(this.props.invoice.total_wei_due);
+        const bill = new BN(this.props.invoice.invoice_amount_wei);
         const fee = new BN("10000000000000000"); // fill this in
         const total = bill.add(fee);
 
@@ -91,9 +92,9 @@ class MakePaymentPage extends React.Component {
                                 <Grid container spacing={2}>
                                     <Grid item md={6}>
                                         <TextField
-                                            id="total_wei_due"
+                                            id="invoice_amount_wei"
                                             label="Total WEI Due"
-                                            defaultValue={this.props.invoice.total_wei_due}
+                                            defaultValue={this.props.invoice.invoice_amount_wei}
                                             margin="normal"
                                             InputProps={{
                                                 readOnly: true,
@@ -105,7 +106,7 @@ class MakePaymentPage extends React.Component {
                                         <TextField
                                             id="total_eth_due"
                                             label="Total ETH Due"
-                                            defaultValue={window.web3.fromWei(this.props.invoice.total_wei_due)}
+                                            defaultValue={window.web3.fromWei(this.props.invoice.invoice_amount_wei)}
                                             margin="normal"
                                             InputProps={{
                                                 readOnly: true,
@@ -118,7 +119,7 @@ class MakePaymentPage extends React.Component {
                                 <TextField
                                     id="amount"
                                     label="Payment Amount"
-                                    defaultValue={this.props.invoice.total_wei_due}
+                                    defaultValue={this.props.invoice.invoice_amount_wei}
                                     margin="normal"
                                     InputProps={{
                                         readOnly: true,
@@ -134,7 +135,7 @@ class MakePaymentPage extends React.Component {
                                 variant="contained"
                                 color="primary"
                                 onClick={(e) => this.onSubmit(e)}>
-                                    Make Payment
+                                    Agree to Pay
     
                             </Button>
 
@@ -152,6 +153,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     loadInvoiceDetail: (id) => dispatch(loadInvoiceDetail(id)),
+    agreeToInvoice: (id) => dispatch(agreeToInvoice(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MakePaymentPage);

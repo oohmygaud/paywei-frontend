@@ -121,15 +121,61 @@ function* register(action) {
 }
 
 function* loadWhitelist(action) {
-    console.log('loading whitelist')
+    console.log('loading whitelist', action)
     try {
         const api = getApi()
         let url = 'whitelist_addresses/?';
+        if (action.status) {
+            url += 'status=' + action.status
+        }
         const response = yield call(api.get, url)
         yield put({ type: "LOAD_WHITELIST_SUCCEEDED", data: response.data })
     }
     catch (e) {
         console.log('Error loading whitelist addresses', e)
+    }
+    
+}
+
+function* addWhitelistAddress(action) {
+    console.log('adding whitelist address')
+    try {
+        const api = getApi()
+        let url = '/whitelist_addresses/';
+        const response = yield call(api.post, url, action.form_data)
+        if (response.status == 201) {
+            console.log('add whitelist address succeeded', response.data)
+            yield put({ type: "ADD_WHITELIST_ADDRESS_SUCCEEDED", data: response.data })
+            yield put({ type: "LOAD_WHITELIST" })
+        }
+        else
+            console.log('Error adding new whitelist address')
+        
+    }
+    catch (e) {
+        console.log('Error adding new whitelist address', e)
+    }
+    
+}
+
+function* verifyAddress(action) {
+    console.log('verifying whitelist address')
+    try {
+        const api = getApi()
+        let url = '/whitelist_addresses/'+action.id+'/verify/';
+        const response = yield call(api.post, url, 
+            {secret: action.secret})
+        if (response.status == 200) {
+            console.log('verify address succeeded', response.data)
+            yield put({ type: "VERIFY_ADDRESS_SUCCEEDED", data: response.data })
+            yield put(push('/profile'))
+        }
+        else
+            console.log('Error verifying address')
+        
+    }
+    catch (e) {
+        console.log('Error verifying address', e)
     }
     
 }
@@ -143,6 +189,8 @@ function* authSaga() {
     yield takeLatest("REGISTER", register);
     yield takeLatest("EDIT_PROFILE", editProfile);
     yield takeLatest("LOAD_WHITELIST", loadWhitelist);
+    yield takeLatest("ADD_WHITELIST_ADDRESS", addWhitelistAddress);
+    yield takeLatest("VERIFY_ADDRESS", verifyAddress);
 }
 
 export default authSaga;

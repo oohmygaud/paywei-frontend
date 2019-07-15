@@ -46,6 +46,18 @@ export const register = (form_data) => ({
     form_data
 });
 
-export const loadWhitelist = () => ({
+export const loadWhitelist = (status) => ({
     type: 'LOAD_WHITELIST',
+    status
+});
+
+export const addWhitelistAddress = (form_data) => ({
+    type: 'ADD_WHITELIST_ADDRESS',
+    form_data
+});
+
+export const verifyAddress = (id, secret) => ({
+    type: 'VERIFY_ADDRESS',
+    id,
+    secret
 });

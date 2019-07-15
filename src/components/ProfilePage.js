@@ -6,19 +6,19 @@ import Typography from '@material-ui/core/Typography';
 import { getProfile, editProfile } from '../store/actions/auth';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
+import Grid from '@material-ui/core/Grid';
+import WhitelistAddress from '../components/WhitelistAddress';
 
 class ProfilePage extends React.Component {
     state = {
-        
+
     }
 
     componentWillMount() {
         this.props.getProfile(this.props.match.params.id)
     }
 
-    OnSubmit = (e) => {
+    onSubmit = (e) => {
         e.preventDefault();
         const form_data = { ...this.props.user, ...this.state };
 
@@ -44,50 +44,69 @@ class ProfilePage extends React.Component {
 
 
         return <React.Fragment>
-            <Card>
-                <h1>
-                    User Settings:
+            <Grid container justify="center" spacing={4} alignItems='center' style={{ margin: '0.5em' }}>
+                <Grid item xs={12} md={6} lg={3}>
+
+
+                    <Card style={{ padding: '1em' }}>
+                        <h1>
+                            User Settings
                 </h1>
-                <form>
-                    <FormGroup row>
-                        <TextField id="username"
-                            label="Username"
-                            defaultValue={this.props.user.username}
-                            disabled />
-                    </FormGroup>
-                    <FormGroup row>
-                        <TextField id="email"
-                            label="Email"
-                            defaultValue={this.props.user.email}
-                            disabled
-                            onChange={(e) => this.setState({ email: e.target.value })} />
-                    </FormGroup>
-                    <FormGroup row>
-                        <TextField id="first_name"
-                            label="First Name"
-                            defaultValue={this.props.user.first_name}
-                            onChange={(e) => this.setState({ first_name: e.target.value })} />
-                    </FormGroup>
-                    <FormGroup row>
-                        <TextField id="last_name"
-                            label="Last Name"
-                            defaultValue={this.props.user.last_name}
-                            onChange={(e) => this.setState({ last_name: e.target.value })} />
-                    </FormGroup>
-                    
-                    
+                        <form onSubmit={(e) => this.onSubmit(e)}>
+                            <FormGroup row>
+                                <TextField id="username"
+                                    label="Username"
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    defaultValue={this.props.user.username}
+                                    disabled />
+                            </FormGroup>
+                            <FormGroup row>
+                                <TextField id="email"
+                                    label="Email"
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    defaultValue={this.props.user.email}
+                                    disabled
+                                    onChange={(e) => this.setState({ email: e.target.value })} />
+                            </FormGroup>
+                            <FormGroup row>
+                                <TextField id="first_name"
+                                    label="First Name"
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    defaultValue={this.props.user.first_name}
+                                    onChange={(e) => this.setState({ first_name: e.target.value })} />
+                            </FormGroup>
+                            <FormGroup row>
+                                <TextField id="last_name"
+                                    label="Last Name"
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    defaultValue={this.props.user.last_name}
+                                    onChange={(e) => this.setState({ last_name: e.target.value })} />
+                            </FormGroup>
 
-                    <Button
-                        style={{ marginRight: '1em', marginTop: '1em' }}
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        onClick={this.OnSubmit}>
 
-                        Update
+
+                            <Button
+                                style={{ marginRight: '1em', marginTop: '1em' }}
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                onClick={this.OnSubmit}>
+
+                                Update
                     </Button>
-                </form>
-            </Card>
+                        </form>
+                    </Card>
+                </Grid>
+                <WhitelistAddress />
+            </Grid>
         </React.Fragment>
     }
 }

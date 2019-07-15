@@ -28,3 +28,8 @@ export const unarchiveInvoice = (id) => ({
     id
 });
 
+export const agreeToInvoice = (id) => ({
+    type: 'AGREE_TO_INVOICE',
+    id
+})
+

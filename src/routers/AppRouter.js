@@ -17,6 +17,7 @@ import InvoiceList from '../components/InvoiceList';
 import InvoiceDetail from '../components/InvoiceDetail';
 import CreateEditInvoice from '../components/CreateEditInvoice';
 import MakePaymentPage from '../components/MakePaymentPage';
+import VerifyAddress from '../components/VerifyAddress';
 
 
 const AppRouter = ({history}) => (
@@ -36,6 +37,7 @@ const AppRouter = ({history}) => (
          <PrivateRoute path="/invoices/:id/edit" component={CreateEditInvoice} />
          <PrivateRoute path="/send_invoice" component={CreateEditInvoice} />
          <PrivateRoute path="/invoices/:id" component={InvoiceDetail} />
+         <PrivateRoute path="/verify_address/:id/:secret" component={VerifyAddress} />
          
          <PrivateRoute path="/invoices" component={InvoiceList} />
          

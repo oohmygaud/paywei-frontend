@@ -19,6 +19,10 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormControl from '@material-ui/core/FormControl';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import palette from '../theme/palette'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
+const ETH_PRICE = 303
 
 class CreateEditInvoice extends React.Component {
     state = {
@@ -27,9 +31,11 @@ class CreateEditInvoice extends React.Component {
         pay_to: "",
         notes: "",
         due_date: null,
-        total_wei_due: "",
+        total_ether_due: "",
+        total_usd_due: "",
         min_payment_threshold: 100,
-        delivery: "email"
+        delivery: "email",
+        copied: false
     }
 
 
@@ -52,9 +58,9 @@ class CreateEditInvoice extends React.Component {
         return `${value}%`;
     }
 
-    OnSubmit(e) {
+    OnSubmitSend(e) {
         e.preventDefault();
-        const form_data = { ...this.state, user: this.props.user_id };
+        const form_data = { ...this.state, user: this.props.user_id, status: 'published' };
 
         if (this.props.match.params.id) {
             console.log('Editing', form_data)
@@ -67,6 +73,19 @@ class CreateEditInvoice extends React.Component {
 
     };
 
+    OnSubmitSave(e) {
+        e.preventDefault();
+        const form_data = { ...this.state, user: this.props.user_id, invoice_amount_wei: window.web3.toWei(this.state.total_ether_due) };
+        if (this.props.match.params.id) {
+            console.log('Editing', form_data)
+            this.props.editInvoice(this.props.match.params.id, form_data);
+        } else {
+            console.log('Creating', form_data)
+            this.props.createInvoice(form_data);
+        }
+
+    };
+
     static getDerivedStateFromProps(nextProps, state) {
         const defaultState = { id: nextProps.invoice && nextProps.invoice.id }
 
@@ -74,9 +93,12 @@ class CreateEditInvoice extends React.Component {
         // so fill in all the state values from the props.subscription
         if (nextProps.invoice && nextProps.invoice.id != state.id
             && nextProps.invoice.id == nextProps.match.params.id) {
+            const total_ether_due = window.web3.fromWei(nextProps.invoice.invoice_amount_wei)
             return {
                 ...nextProps.invoice,
-                due_date: new Date(nextProps.invoice.due_date)
+                due_date: new Date(nextProps.invoice.due_date),
+                total_ether_due,
+                total_usd_due: total_ether_due * ETH_PRICE
             };
         }
         else {
@@ -90,7 +112,7 @@ class CreateEditInvoice extends React.Component {
         this.props.loadWhitelist()
         if (this.props.match.params.id)
             this.props.loadInvoiceDetail(this.props.match.params.id)
-        
+
     }
 
     render() {
@@ -99,7 +121,7 @@ class CreateEditInvoice extends React.Component {
         let exists = this.props.created || this.props.invoice;
 
         return <React.Fragment>
-            <Grid container justify="center" spacing={4} alignItems='center' style={{ margin: '0.5em'}}>
+            <Grid container justify="center" spacing={4} alignItems='center' style={{ margin: '0.5em' }}>
                 <Grid item xs={12} md={6} lg={3} >
                     <form onSubmit={(e) => this.onSubmit(e)}>
                         <Card style={{ padding: '1em' }}>
@@ -139,7 +161,7 @@ class CreateEditInvoice extends React.Component {
                                     {this.props.whitelist.results.map(entry => (
                                         <MenuItem key={entry.id} value={entry.id}>{entry.nickname} - {entry.address}</MenuItem>
                                     ))}
-                                    
+
                                 </Select>
                             </FormControl>
 
@@ -153,19 +175,43 @@ class CreateEditInvoice extends React.Component {
                                     onChange={(e) => this.setState({ recipient_email: e.target.value })}
                                 />
                             </FormGroup>
+                            <Grid container spacing={1}>
+                                <Grid item xs={6}>
+                                    <FormGroup>
+                                        <TextField
+                                            id="total_usd_due"
+                                            fullWidth
+                                            value={this.state.total_usd_due}
+                                            type="number"
+                                            variant="outlined"
+                                            margin="normal"
+                                            label="Total USD Due"
+                                            onChange={(e) => this.setState({ total_usd_due: e.target.value, total_ether_due: e.target.value / ETH_PRICE })}
+                                            InputProps={{
+                                                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                              }}
+                                        />
+                                    </FormGroup>
 
-                            <FormGroup>
-                                <TextField
-                                    id="total_wei_due"
-                                    defaultValue={this.state.total_wei_due}
-                                    type="number"
-                                    variant="outlined"
-                                    margin="normal"
-                                    label="Total Wei Due"
-                                    onChange={(e) => this.setState({ total_wei_due: e.target.value })}
-                                />
-                            </FormGroup>
-
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <FormGroup>
+                                        <TextField
+                                            id="total_ether_due"
+                                            fullWidth
+                                            value={this.state.total_ether_due}
+                                            type="number"
+                                            variant="outlined"
+                                            margin="normal"
+                                            label="Total ETH Due"
+                                            onChange={(e) => this.setState({ total_ether_due: e.target.value, total_usd_due: e.target.value * ETH_PRICE })}
+                                            InputProps={{
+                                                startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+                                              }}
+                                        />
+                                    </FormGroup>
+                                </Grid>
+                            </Grid>
                             <FormGroup>
                                 <Typography id="discrete-slider" gutterBottom>
                                     Minimum Payment Threshold: {this.state.min_payment_threshold}%
@@ -213,32 +259,30 @@ class CreateEditInvoice extends React.Component {
 
 
                             <Button
+                                style={{ marginTop: "1em", marginRight: "1em" }}
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                onClick={(e) => this.OnSubmitSave(e)}>
+                                <Typography variant="button" gutterBottom className="logintypography">
+                                    {!this.props.invoice ? "Save" : "Edit Invoice"}
+                                </Typography>
+                            </Button>
+                            <Button
                                 style={{ marginTop: "1em" }}
                                 type="submit"
                                 variant="contained"
                                 color="primary"
-                                onClick={(e) => this.OnSubmit(e)}>
+                                onClick={(e) => this.OnSubmitSend(e)}>
                                 <Typography variant="button" gutterBottom className="logintypography">
-                                    {!this.props.invoice ? "Create Invoice" : "Edit Invoice"}
+                                    Send Now
                                 </Typography>
                             </Button>
 
                         </Card>
                     </form>
                 </Grid>
-                {exists && exists.delivery == 'link' ?
-                    <Grid item xs={12} md={6} lg={3} >
-                        <Card style={{ padding: '1em' }} style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
-                            <h2 style={{ color: 'white' }}>Copy the link & Send your invoice!</h2>
-                            <h4 style={{ display: 'inline-block', color: 'white' }}>https://PayWei.co/pay/{exists.id}</h4>
-                            <br />
-                            <Button color='primary' variant='contained' style={{ margin: '1.5em' }}>
-                                <FileCopyIcon />
-                            </Button>
-                        </Card>
-                    </Grid>
 
-                    : null}
             </Grid>
         </React.Fragment >
 
@@ -262,7 +306,7 @@ const mapDispatchToProps = (dispatch) => ({
     unarchive: (id) => dispatch(unarchiveInvoice(id)),
     loadInvoiceDetail: (id) => dispatch(loadInvoiceDetail(id)),
     clearDetails: () => dispatch({ type: 'CLEAR_INVOICE_DETAILS' }),
-    loadWhitelist: () => dispatch(loadWhitelist())
+    loadWhitelist: () => dispatch(loadWhitelist('verified'))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEditInvoice);

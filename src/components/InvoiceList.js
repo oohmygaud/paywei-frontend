@@ -70,7 +70,7 @@ class InvoiceList extends React.Component {
                                     {invoice.status}
                                 </TableCell>
                                 <TableCell>
-                                    {invoice.total_wei_due} WEI
+                                    {window.web3.fromWei(invoice.invoice_amount_wei)} ETH
                                 </TableCell>
                             </TableRow>
                         ))}

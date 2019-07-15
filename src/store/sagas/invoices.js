@@ -21,8 +21,7 @@ function* createInvoice(action) {
         const api = getApi()
         const response = yield call(api.post, 'invoices/', action.data)
         yield put({ type: "CREATE_INVOICE_SUCCEEDED", data: response.data })
-        if (response.data.delivery == "email")
-            yield put(push('/invoices/'+response.data.id))
+        yield put(push('/invoices/'+response.data.id))
     }
     catch (e) {
         console.log('Error creating invoice', e)
@@ -78,6 +77,18 @@ function* unarchiveInvoice(action) {
     }
 }
 
+function* agreeToInvoice(action) {
+    try {
+        const api = getApi()
+        const response = yield call(api.post, 'invoices/'+action.id+'/agree/', action.data)
+        yield put({ type: "AGREE_TO_INVOICE_SUCCEEDED", data: response.data })
+        yield put({ type: "LOAD_INVOICE_DETAIL_SUCCEEDED", data: response.data })
+    }
+    catch(e) {
+        console.log('Error agreeing to invoice', e)
+    }
+}
+
 
 function* InvoiceSaga() {
     yield takeLatest("LOAD_INVOICES", loadInvoiceList);
@@ -86,6 +97,7 @@ function* InvoiceSaga() {
     yield takeLatest("LOAD_INVOICE_DETAIL", loadInvoiceDetail);
     yield takeLatest("ARCHIVE_INVOICE", archiveInvoice);
     yield takeLatest("UNARCHIVE_INVOICE", unarchiveInvoice);
+    yield takeLatest("AGREE_TO_INVOICE", agreeToInvoice);
 }
 
 export default InvoiceSaga;
