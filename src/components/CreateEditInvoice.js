@@ -17,10 +17,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormControl from '@material-ui/core/FormControl';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import palette from '../theme/palette'
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { Link } from 'react-router-dom';
 
 const ETH_PRICE = 303
 
@@ -121,6 +119,12 @@ class CreateEditInvoice extends React.Component {
         let exists = this.props.created || this.props.invoice;
 
         return <React.Fragment>
+            <Grid container>
+                <Grid item sm xs={12} style={{ marginTop: '1em' }}>
+                    <Link to={'/invoices'}><Button>Back to Invoice List</Button></Link>
+                </Grid>
+                
+            </Grid>
             <Grid container justify="center" spacing={4} alignItems='center' style={{ margin: '0.5em' }}>
                 <Grid item xs={12} md={6} lg={3} >
                     <form onSubmit={(e) => this.onSubmit(e)}>
@@ -189,7 +193,7 @@ class CreateEditInvoice extends React.Component {
                                             onChange={(e) => this.setState({ total_usd_due: e.target.value, total_ether_due: e.target.value / ETH_PRICE })}
                                             InputProps={{
                                                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                                              }}
+                                            }}
                                         />
                                     </FormGroup>
 
@@ -207,7 +211,7 @@ class CreateEditInvoice extends React.Component {
                                             onChange={(e) => this.setState({ total_ether_due: e.target.value, total_usd_due: e.target.value * ETH_PRICE })}
                                             InputProps={{
                                                 startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
-                                              }}
+                                            }}
                                         />
                                     </FormGroup>
                                 </Grid>
@@ -279,6 +283,8 @@ class CreateEditInvoice extends React.Component {
                                 </Typography>
                             </Button>
 
+                            
+
                         </Card>
                     </form>
                 </Grid>
@@ -306,7 +312,8 @@ const mapDispatchToProps = (dispatch) => ({
     unarchive: (id) => dispatch(unarchiveInvoice(id)),
     loadInvoiceDetail: (id) => dispatch(loadInvoiceDetail(id)),
     clearDetails: () => dispatch({ type: 'CLEAR_INVOICE_DETAILS' }),
-    loadWhitelist: () => dispatch(loadWhitelist('verified'))
+    loadWhitelist: () => dispatch(loadWhitelist('verified')),
+    
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEditInvoice);

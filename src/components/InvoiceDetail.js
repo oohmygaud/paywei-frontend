@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { loadInvoiceDetail, editInvoice } from '../store/actions/invoices';
+import { loadInvoiceDetail, editInvoice, archiveInvoice, unarchiveInvoice } from '../store/actions/invoices';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
@@ -14,6 +14,8 @@ import TableRow from '@material-ui/core/TableRow';
 import palette from '../theme/palette'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import ArchiveIcon from '@material-ui/icons/Archive';
+import UnarchiveIcon from '@material-ui/icons/Unarchive';
 
 
 let StatusCard = ({ invoice, publishNow }) => {
@@ -48,7 +50,7 @@ let StatusCard = ({ invoice, publishNow }) => {
             </CopyToClipboard>
         </Card>
 
-    if (invoice.delivery == 'link' && invoice.status == 'new')
+    if (invoice.delivery == 'link' && invoice.status != 'paid')
         return <Card style={{ padding: '1em' }} style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
             <h2 style={{ color: 'white' }}>Copy the link & Send your invoice!</h2>
             <h4 style={{ display: 'inline-block', color: 'white' }}>https://PayWei.co/pay/{invoice.id}</h4>
@@ -75,6 +77,8 @@ let StatusCard = ({ invoice, publishNow }) => {
                 </Button>
             </CopyToClipboard>
         </Card>
+
+    return null
 
 }
 
@@ -169,6 +173,21 @@ class InvoiceDetail extends React.Component {
                 <Grid item xs={12} md={6} lg={3} >
                     <StatusCard invoice={this.props.invoice} publishNow={() => this.publishNow()} />
 
+
+                    {this.props.invoice ?
+                        !this.props.invoice.archived_at ?
+                            <Button
+                                color="secondary"
+                                style={{ marginTop: "1em" }}
+                                onClick={(e) => this.props.archive(this.props.invoice.id)} >
+                                <ArchiveIcon />Archive
+                                    </Button>
+                            :
+                            <Button color="secondary" onClick={(e) => this.props.unarchive(this.props.invoice.id)} >
+                                <UnarchiveIcon />Unarchive
+                                    </Button>
+
+                        : null}
                 </Grid>
             </Grid>
 
@@ -182,7 +201,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     loadInvoiceDetail: (id) => dispatch(loadInvoiceDetail(id)),
-    editInvoice: (id, data) => dispatch(editInvoice(id, data))
+    editInvoice: (id, data) => dispatch(editInvoice(id, data)),
+    archive: (id) => dispatch(archiveInvoice(id)),
+    unarchive: (id) => dispatch(unarchiveInvoice(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvoiceDetail);

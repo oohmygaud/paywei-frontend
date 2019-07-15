@@ -33,7 +33,7 @@ class APIKeyPage extends React.Component {
         return <React.Fragment>
             <Grid container>
                 <Grid item sm xs={12} style={{ marginTop: '1em' }}>
-                <Link to={'/'}><Button>Back to Dashboard</Button></Link>
+                <Link to={'/dashboard'}><Button>Back to Dashboard</Button></Link>
                     
                 </Grid>
                 <Grid item sm={6} xs={12} style={{ marginBottom: '0.5em', textAlign:"center" }}>

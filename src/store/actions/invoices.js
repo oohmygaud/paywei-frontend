@@ -1,5 +1,6 @@
-export const loadInvoiceList = () => ({
+export const loadInvoiceList = (options) => ({
     type: 'LOAD_INVOICES',
+    options
 });
 
 export const createInvoice = (data) => ({

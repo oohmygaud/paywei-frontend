@@ -7,6 +7,10 @@ function* loadInvoiceList(action) {
         const api = getApi()
         let url = 'invoices/?';
         console.log(action)
+        if (action.options && action.options.show_archived)
+            url += '&show_archived=true';
+        if (action.options && action.options.page)
+            url += '&page=' + action.options.page;
         const response = yield call(api.get, url)
         yield put({ type: "LOAD_INVOICES_SUCCEEDED", data: response.data })
     }
@@ -21,7 +25,7 @@ function* createInvoice(action) {
         const api = getApi()
         const response = yield call(api.post, 'invoices/', action.data)
         yield put({ type: "CREATE_INVOICE_SUCCEEDED", data: response.data })
-        yield put(push('/invoices/'+response.data.id))
+        yield put(push('/invoices/' + response.data.id))
     }
     catch (e) {
         console.log('Error creating invoice', e)
@@ -31,11 +35,11 @@ function* createInvoice(action) {
 function* editInvoice(action) {
     try {
         const api = getApi()
-        const response = yield call(api.put, 'invoices/'+action.id+'/', action.data)
+        const response = yield call(api.put, 'invoices/' + action.id + '/', action.data)
         yield put({ type: "EDIT_INVOICE_SUCCEEDED", data: response.data })
-        yield put(push('/invoices/'+response.data.id))
+        yield put(push('/invoices/' + response.data.id))
     }
-    catch(e) {
+    catch (e) {
         console.log('Error editing invoice', e)
     }
 }
@@ -54,12 +58,12 @@ function* loadInvoiceDetail(action) {
 function* archiveInvoice(action) {
     try {
         const api = getApi()
-        const response = yield call(api.post, 'invoices/'+action.id+'/archive/', action.data)
+        const response = yield call(api.post, 'invoices/' + action.id + '/archive/', action.data)
         yield put({ type: "ARCHIVE_INVOICE_SUCCEEDED", data: response.data })
         yield put({ type: "LOAD_INVOICE_DETAIL_SUCCEEDED", data: response.data })
         yield put(push('/invoices/'))
     }
-    catch(e) {
+    catch (e) {
         console.log('Error archiving invoice', e)
     }
 }
@@ -67,12 +71,12 @@ function* archiveInvoice(action) {
 function* unarchiveInvoice(action) {
     try {
         const api = getApi()
-        const response = yield call(api.post, 'invoices/'+action.id+'/unarchive/', action.data)
+        const response = yield call(api.post, 'invoices/' + action.id + '/unarchive/', action.data)
         yield put({ type: "UNARCHIVE_INVOICE_SUCCEEDED", data: response.data })
         yield put({ type: "LOAD_INVOICE_DETAIL_SUCCEEDED", data: response.data })
         yield put(push('/invoices/'))
     }
-    catch(e) {
+    catch (e) {
         console.log('Error unarchiving invoice', e)
     }
 }
@@ -80,11 +84,11 @@ function* unarchiveInvoice(action) {
 function* agreeToInvoice(action) {
     try {
         const api = getApi()
-        const response = yield call(api.post, 'invoices/'+action.id+'/agree/', action.data)
+        const response = yield call(api.post, 'invoices/' + action.id + '/agree/', action.data)
         yield put({ type: "AGREE_TO_INVOICE_SUCCEEDED", data: response.data })
         yield put({ type: "LOAD_INVOICE_DETAIL_SUCCEEDED", data: response.data })
     }
-    catch(e) {
+    catch (e) {
         console.log('Error agreeing to invoice', e)
     }
 }

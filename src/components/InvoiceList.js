@@ -11,13 +11,43 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Card from '@material-ui/core/Card';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 class InvoiceList extends React.Component {
+    state = {
+        show_archived: false,
+        page: 1
+    }
 
+    searchOptions() {
+        return {
+            show_archived: this.state.show_archived,
+            page: this.state.page
+        }
+    }
+
+    loadPage(page) {
+        this.props.loadInvoiceList({
+            ...this.searchOptions(),
+            page: page
+        })
+        this.setState({ page: page })
+    }
 
     componentWillMount() {
-        this.props.loadInvoiceList()
+        this.props.loadInvoiceList(this.searchOptions())
     }
+
+    toggleArchived() {
+        this.setState({show_archived: !this.state.show_archived});
+        this.props.loadInvoiceList({
+            ...this.searchOptions(),
+            show_archived: !this.state.show_archived
+        })
+    }
+
+    
 
     render() {
         if (!this.props.invoices)
@@ -36,6 +66,18 @@ class InvoiceList extends React.Component {
                         <Button>Send an Invoice</Button></Link>
                 </Grid>
             </Grid>
+            <Grid container>
+                    <FormControlLabel control={
+                        <Switch
+                            onChange={(e) => this.toggleArchived()}
+                            value="show_archived"
+                            color="secondary"
+                            checked={this.state.show_archived}
+                        />
+                    }
+                    label="Show Archived"
+                    />
+                </Grid>
             <Card>
                 <Table>
                     <TableHead>
@@ -77,6 +119,20 @@ class InvoiceList extends React.Component {
                     </TableBody>
                 </Table>
             </Card>
+            <Grid container justify="space-between">
+                <Grid item>
+                    <Button color="secondary" disabled={this.props.invoices.previous == null}
+                        onClick={(e) => this.loadPage(this.state.page - 1)}>Previous Page</Button>
+                </Grid>
+
+
+                <Grid item><Button disabled>Page {this.state.page}</Button></Grid>
+
+                <Grid item>
+                    <Button color="secondary" disabled={this.props.invoices.next == null}
+                        onClick={(e) => this.loadPage(this.state.page + 1)}>Next Page</Button>
+                </Grid>
+            </Grid>
         </React.Fragment>
 
     }
@@ -87,7 +143,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    loadInvoiceList: () => dispatch(loadInvoiceList())
+    loadInvoiceList: (options) => dispatch(loadInvoiceList(options))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvoiceList);
