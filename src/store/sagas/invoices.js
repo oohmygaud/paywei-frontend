@@ -93,6 +93,17 @@ function* agreeToInvoice(action) {
     }
 }
 
+function* showGraph(action) {
+    try {
+        const api = getApi()
+        const response = yield call(api.get, 'dashboard/')
+        yield put({ type: "SHOW_GRAPH_SUCCEEDED", data: response.data })
+    }
+    catch (e) {
+        console.log('Error showing graph', e)
+    }
+}
+
 
 function* InvoiceSaga() {
     yield takeLatest("LOAD_INVOICES", loadInvoiceList);
@@ -102,6 +113,7 @@ function* InvoiceSaga() {
     yield takeLatest("ARCHIVE_INVOICE", archiveInvoice);
     yield takeLatest("UNARCHIVE_INVOICE", unarchiveInvoice);
     yield takeLatest("AGREE_TO_INVOICE", agreeToInvoice);
+    yield takeLatest("SHOW_GRAPH", showGraph);
 }
 
 export default InvoiceSaga;

@@ -16,6 +16,9 @@ export default (state = {}, action) => {
 
         case 'CLEAR_INVOICE_DETAILS':
             return { ...state, detail: null };
+        
+        case 'SHOW_GRAPH_SUCCEEDED':
+                return { ...state, graph: action.data };
     
         default: return state;
     }

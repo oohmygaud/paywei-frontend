@@ -32,5 +32,10 @@ export const unarchiveInvoice = (id) => ({
 export const agreeToInvoice = (id) => ({
     type: 'AGREE_TO_INVOICE',
     id
-})
+});
+
+export const showGraph = (data) => ({
+    type: 'SHOW_GRAPH',
+    data
+});
 

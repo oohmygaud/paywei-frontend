@@ -15,6 +15,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AppBar from '@material-ui/core/AppBar';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import invoice_sample from '../../public/invoice_sample.png'
 
 class LandingPage extends React.Component {
   state = {
@@ -36,7 +37,7 @@ class LandingPage extends React.Component {
       >
         <Grid item xs={12} sm={4}>
           <h1>
-            PayWei
+            Invoices made easy
           </h1>
           <h2>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />In full or in payments
@@ -72,7 +73,7 @@ class LandingPage extends React.Component {
         </Grid>
       </Grid>
 
-    <div style={heroStyle}>
+    
       <Grid 
         container
         spacing={4}
@@ -80,7 +81,7 @@ class LandingPage extends React.Component {
         justify='center'
       >
         <Grid item xs={12} sm={4}>
-          
+          <img src={invoice_sample} />
           </Grid>
 
         <Grid item xs={12} sm={4}>
@@ -92,7 +93,7 @@ class LandingPage extends React.Component {
 
         
       </Grid>
-      </div>
+      
 
 
 
