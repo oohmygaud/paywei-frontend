@@ -180,6 +180,27 @@ function* verifyAddress(action) {
     
 }
 
+function* archiveAddress(action) {
+    console.log('archiving whitelist address')
+    try {
+        const api = getApi()
+        let url = '/whitelist_addresses/'+action.id+'/';
+        const response = yield call(api.delete, url)
+        if (response.status == 204) {
+            console.log('archive address succeeded', response.data)
+            yield put({ type: "ARCHIVE_ADDRESS_SUCCEEDED", data: response.data })
+            yield put({ type: "LOAD_WHITELIST" })
+        }
+        else
+            console.log('Error archiving address')
+        
+    }
+    catch (e) {
+        console.log('Error archiving address', e)
+    }
+    
+}
+
 
 function* authSaga() {
     yield takeLatest("LOGIN", startLogin);
@@ -191,6 +212,7 @@ function* authSaga() {
     yield takeLatest("LOAD_WHITELIST", loadWhitelist);
     yield takeLatest("ADD_WHITELIST_ADDRESS", addWhitelistAddress);
     yield takeLatest("VERIFY_ADDRESS", verifyAddress);
+    yield takeLatest("ARCHIVE_ADDRESS", archiveAddress);
 }
 
 export default authSaga;

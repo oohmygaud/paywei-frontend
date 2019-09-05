@@ -32,6 +32,8 @@
     "file-loader": "^1.1.11",
     "fusioncharts": "^3.12.2",
     "material-ui-image": "^3.0.0",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.26",
     "prismjs": "^1.16.0",
     "react": "^16.8.0",
     "react-copy-to-clipboard": "^5.0.1",

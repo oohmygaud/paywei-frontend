@@ -1,18 +1,84 @@
 import React from 'react';
-import FormGroup from '@material-ui/core/FormGroup';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { loadWhitelist, addWhitelistAddress } from '../store/actions/auth';
+import { loadWhitelist, addWhitelistAddress, archiveAddress } from '../store/actions/auth';
 import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TimeAgo from 'timeago-react';
+import ArchiveIcon from '@material-ui/icons/Archive';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+class AddressRowBase extends React.Component {
+    state = {
+        dialog: false,
+    }
+    openDialog() {
+        this.setState({ dialog: true })
+    }
+
+    handleClose() {
+        this.setState({ dialog: false })
+    }
+
+    render() {
+        const address = this.props.address;
+        return <TableRow key={address.id}>
+            <TableCell>
+                <TimeAgo datetime={address.created_at} />
+            </TableCell>
+            <TableCell>
+                <b>{address.nickname}</b>
+                <br />
+                {address.address}
+            </TableCell>
+            <TableCell>
+                {address.status}
+            </TableCell>
+            <TableCell>
+                <Button
+                    color="secondary"
+                    style={{ marginTop: "1em" }}
+                    onClick={() => this.openDialog()} >
+                    <ArchiveIcon />Archive
+                </Button>
+                <Dialog
+                    open={this.state.dialog}
+                    onClose={(e) => this.handleClose(e)}
+                >
+                    <DialogTitle>{"Are you sure you want to archive this whitelist address?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            If you archive this address, it can no longer be used to receive funds. You can re-verify at any time.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={(e) => this.handleClose(e)} color="primary">
+                            Disagree
+                        </Button>
+                        <Button onClick={(e) => {
+                            this.props.archiveAddress(address.id);
+                            this.handleClose(e);
+                        }} color="primary" autoFocus>
+                            Agree
+                    </Button>
+                    </DialogActions>
+                </Dialog>
+            </TableCell>
+        </TableRow>
+    }
+}
+const AddressRow = connect(null, (dispatch) => ({
+    archiveAddress: (id) => dispatch(archiveAddress(id))
+}))(AddressRowBase)
 
 class WhitelistAddress extends React.Component {
 
@@ -38,7 +104,7 @@ class WhitelistAddress extends React.Component {
             return <React.Fragment>Loading....</React.Fragment>
         return <React.Fragment>
 
-            <Grid item >
+            <Grid item xs={12} lg={6}>
                 <Card style={{ padding: '1em' }}>
                     <form onSubmit={(e) => this.onSubmit(e)}>
                         <h1>
@@ -48,20 +114,7 @@ class WhitelistAddress extends React.Component {
                         <Table>
                             <TableBody>
                                 {this.props.addresses.results.map(address => (
-                                    <TableRow key={address.id}>
-                                        <TableCell>
-                                            <TimeAgo datetime={address.created_at} />
-                                        </TableCell>
-                                        <TableCell>
-                                            {address.nickname}
-                                        </TableCell>
-                                        <TableCell>
-                                            {address.address}
-                                        </TableCell>
-                                        <TableCell>
-                                            {address.status}
-                                        </TableCell>
-                                    </TableRow>
+                                    <AddressRow key={address.id} address={address} />
                                 ))}
 
                             </TableBody>
@@ -114,7 +167,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     loadWhitelist: () => dispatch(loadWhitelist()),
-    addWhitelistAddress: (form_data) => dispatch(addWhitelistAddress(form_data))
+    addWhitelistAddress: (form_data) => dispatch(addWhitelistAddress(form_data)),
+    archiveAddress: (id) => dispatch(archiveAddress(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WhitelistAddress);

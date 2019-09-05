@@ -61,3 +61,8 @@ export const verifyAddress = (id, secret) => ({
     id,
     secret
 });
+
+export const archiveAddress = (id) => ({
+    type: 'ARCHIVE_ADDRESS',
+    id
+});

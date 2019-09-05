@@ -13,6 +13,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Card from '@material-ui/core/Card';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import moment from 'moment';
 
 class InvoiceList extends React.Component {
     state = {
@@ -101,7 +102,7 @@ class InvoiceList extends React.Component {
                                     </Link>
                                 </TableCell>
                                 <TableCell>
-                                    {invoice.due_date}
+                                    {moment(invoice.due_date).format('lll')}
                                 </TableCell>
                                 <TableCell>
                                     <Link to={"/pay/" + invoice.id}>

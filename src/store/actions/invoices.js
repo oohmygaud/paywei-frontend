@@ -3,6 +3,10 @@ export const loadInvoiceList = (options) => ({
     options
 });
 
+export const loadPaymentList = () => ({
+    type: 'LOAD_PAYMENT_LIST',
+});
+
 export const createInvoice = (data) => ({
     type: 'CREATE_INVOICE',
     data

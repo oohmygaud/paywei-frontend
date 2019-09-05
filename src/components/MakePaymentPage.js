@@ -84,10 +84,11 @@ class MakePaymentPage extends React.Component {
                                     label="Invoice Id"
                                     defaultValue={this.props.invoice.id}
                                     margin="normal"
+                                    variant="outlined"
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    variant="outlined"
+                                    
                                 />
                                 <Grid container spacing={2}>
                                     <Grid item md={6}>
@@ -96,10 +97,11 @@ class MakePaymentPage extends React.Component {
                                             label="Total WEI Due"
                                             defaultValue={this.props.invoice.invoice_amount_wei}
                                             margin="normal"
+                                            variant="outlined"
                                             InputProps={{
                                                 readOnly: true,
                                             }}
-                                            variant="outlined"
+                                            
                                         />
                                     </Grid>
                                     <Grid item md={6}>
@@ -108,10 +110,11 @@ class MakePaymentPage extends React.Component {
                                             label="Total ETH Due"
                                             defaultValue={window.web3.fromWei(this.props.invoice.invoice_amount_wei)}
                                             margin="normal"
+                                            variant="outlined"
                                             InputProps={{
                                                 readOnly: true,
                                             }}
-                                            variant="outlined"
+                                            
                                         />
                                     </Grid>
 
@@ -121,10 +124,11 @@ class MakePaymentPage extends React.Component {
                                     label="Payment Amount"
                                     defaultValue={this.props.invoice.invoice_amount_wei}
                                     margin="normal"
+                                    variant="outlined"
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    variant="outlined"
+                                    
                                 />
 
                             </FormGroup>

@@ -19,6 +19,19 @@ function* loadInvoiceList(action) {
     }
 }
 
+function* loadPaymentList(action) {
+    try {
+        const api = getApi()
+        let url = 'payments/?';
+        console.log(action)
+        const response = yield call(api.get, url)
+        yield put({ type: "LOAD_PAYMENTS_SUCCEEDED", data: response.data })
+    }
+    catch (e) {
+        console.log('Error loading payments', e)
+    }
+}
+
 function* createInvoice(action) {
     try {
         console.log('create invoice', action)
@@ -114,6 +127,7 @@ function* InvoiceSaga() {
     yield takeLatest("UNARCHIVE_INVOICE", unarchiveInvoice);
     yield takeLatest("AGREE_TO_INVOICE", agreeToInvoice);
     yield takeLatest("SHOW_GRAPH", showGraph);
+    yield takeLatest("LOAD_PAYMENT_LIST", loadPaymentList);
 }
 
 export default InvoiceSaga;

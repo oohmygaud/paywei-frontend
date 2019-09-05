@@ -19,6 +19,9 @@ export default (state = {}, action) => {
         
         case 'SHOW_GRAPH_SUCCEEDED':
                 return { ...state, graph: action.data };
+        
+        case 'LOAD_PAYMENTS_SUCCEEDED':
+            return { ...state, payments: action.data };
     
         default: return state;
     }

@@ -44,20 +44,24 @@ class ProfilePage extends React.Component {
 
 
         return <React.Fragment>
-            <Grid container justify="center" spacing={4} alignItems='center' style={{ margin: '0.5em' }}>
+            <Grid 
+                container 
+                justify="center"
+                spacing={3} 
+            >
                 <Grid item xs={12} md={6} lg={3}>
 
 
                     <Card style={{ padding: '1em' }}>
+                        
+                        <form onSubmit={(e) => this.onSubmit(e)}>
                         <h1>
                             User Settings
-                </h1>
-                        <form onSubmit={(e) => this.onSubmit(e)}>
+                        </h1>
                             <FormGroup row>
                                 <TextField id="username"
                                     label="Username"
                                     variant="outlined"
-                                    margin="normal"
                                     fullWidth
                                     defaultValue={this.props.user.username}
                                     disabled />

@@ -42,6 +42,10 @@ export default (state = {}, action) => {
         case 'ADD_WHITELIST_ADDRESS_SUCCEEDED':
             console.log('Added Whitelist Address');
             return { ...state, address: action.data }
+            
+        case 'ARCHIVE_ADDRESS_SUCCEEDED':
+            console.log('Archived Whitelist Address');
+            return { ...state, id: action.id}
 
         default: return state;
     }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { loadInvoiceDetail, editInvoice, archiveInvoice, unarchiveInvoice } from '../store/actions/invoices';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
@@ -9,7 +8,6 @@ import Card from '@material-ui/core/Card';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import palette from '../theme/palette'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -20,27 +18,35 @@ import UnarchiveIcon from '@material-ui/icons/Unarchive';
 
 let StatusCard = ({ invoice, publishNow }) => {
     if (invoice.delivery == 'email' && invoice.status == 'new')
-        return <Card style={{ padding: '1em' }} style={{ background: palette.orange, padding: '1em', textAlign: 'center' }}>
-            <h2 style={{ color: 'white' }}>DRAFT</h2>
+        return <Card style={{ background: palette.orange, padding: '1em', textAlign: 'center' }}>
+            <h2 style={{ color: 'white' }}>
+                DRAFT
+            </h2>
 
-            <h4 style={{ display: 'inline-block', color: 'white' }}>Not yet delivered to {invoice.recipient_email}</h4>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>
+                Not yet delivered to {invoice.recipient_email}
+            </h4>
             <Button
                 style={{ marginTop: "1em" }}
                 type="submit"
                 variant="contained"
                 color="primary"
                 onClick={publishNow}>
-                <Typography variant="button" gutterBottom className="logintypography">
+                
                     Send Now
-                </Typography>
+                
             </Button>
         </Card>
 
     if (invoice.delivery == 'email' && invoice.status == 'published')
-        return <Card style={{ padding: '1em' }} style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
+        return <Card style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
             <h2 style={{ color: 'white' }}>SENT</h2>
-            <h4 style={{ display: 'inline-block', color: 'white' }}>Your invoice has been sent to {invoice.recipient_email}</h4>
-            <h4 style={{ display: 'inline-block', color: 'white' }}>Copy link here: <br />https://PayWei.co/pay/{invoice.id}</h4>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>
+                Your invoice has been sent to {invoice.recipient_email}
+            </h4>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>
+                Copy link here: <br />https://PayWei.co/pay/{invoice.id}
+            </h4>
             <CopyToClipboard
                 text={'https://PayWei.co/pay/' + invoice.id}
                 onCopy={() => this.setState({ copied: true })}>
@@ -51,9 +57,13 @@ let StatusCard = ({ invoice, publishNow }) => {
         </Card>
 
     if (invoice.delivery == 'link' && invoice.status != 'paid')
-        return <Card style={{ padding: '1em' }} style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
-            <h2 style={{ color: 'white' }}>Copy the link & Send your invoice!</h2>
-            <h4 style={{ display: 'inline-block', color: 'white' }}>https://PayWei.co/pay/{invoice.id}</h4>
+        return <Card style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
+            <h2 style={{ color: 'white' }}>
+                Copy the link & Send your invoice!
+            </h2>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>
+                https://PayWei.co/pay/{invoice.id}
+            </h4>
             <br />
             <CopyToClipboard
                 text={'https://PayWei.co/pay/' + invoice.id}
@@ -65,10 +75,16 @@ let StatusCard = ({ invoice, publishNow }) => {
         </Card>
 
     if (invoice.status == 'agreed')
-        return <Card style={{ padding: '1em' }} style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
-            <h2 style={{ color: 'white' }}>AGREED</h2>
-            <h4 style={{ display: 'inline-block', color: 'white' }}>Cannot make changes to this invoice.</h4>
-            <h4 style={{ display: 'inline-block', color: 'white' }}>Copy link here: <br />https://PayWei.co/pay/{invoice.id}</h4>
+        return <Card style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
+            <h2 style={{ color: 'white' }}>
+                AGREED
+            </h2>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>
+                Cannot make changes to this invoice.
+            </h4>
+            <h4 style={{ display: 'inline-block', color: 'white' }}>
+                Copy link here: <br />https://PayWei.co/pay/{invoice.id}
+            </h4>
             <CopyToClipboard
                 text={'https://PayWei.co/pay/' + invoice.id}
                 onCopy={() => this.setState({ copied: true })}>
@@ -102,7 +118,7 @@ class InvoiceDetail extends React.Component {
                     <Link to={'/invoices'}><Button>Back to Invoices</Button></Link>
                 </Grid>
 
-                <Grid item sm={6} xs={8} style={{ marginBottom: '0.5em', textAlign: "center" }} >
+                <Grid item sm={6} xs={8} style={{ marginBottom: '0.5em', textAlign: "center" }}>
 
                 </Grid>
 
@@ -120,24 +136,24 @@ class InvoiceDetail extends React.Component {
                     <Card>
                         <h2>{this.props.invoice.title} Details</h2>
                         <Grid container style={{ textAlign: 'center', paddingTop: '2em' }}>
-                            <Grid item xs={4} >
+                            <Grid item xs={4}>
                                 {this.props.invoice.invoice_amount_wei}
                             </Grid>
-                            <Grid item xs={4} >
+                            <Grid item xs={4}>
                                 12
                             </Grid>
-                            <Grid item xs={4} >
+                            <Grid item xs={4}>
                                 1000
                             </Grid>
                         </Grid>
                         <Grid container style={{ textAlign: 'center', paddingTop: '0.5em', paddingBottom: '2em' }}>
-                            <Grid item xs={4} >
+                            <Grid item xs={4}>
                                 Total (USD)
                             </Grid>
-                            <Grid item xs={4} >
+                            <Grid item xs={4}>
                                 Total (COIN)
                             </Grid>
-                            <Grid item xs={4} >
+                            <Grid item xs={4}>
                                 Paid
                             </Grid>
                         </Grid>

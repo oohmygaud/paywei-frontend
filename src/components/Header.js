@@ -1,6 +1,5 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
-
 import { connect } from 'react-redux';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,18 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
-
-
-
-
 import {Link} from 'react-router-dom';
 import PublicNavList from '../navs/publicNav';
 import PrivateNavList from '../navs/privateNav';
 import {logout} from '../store/actions/auth';
-import {NavLink} from 'react-router-dom';
-
 
 class Header extends React.Component{
 

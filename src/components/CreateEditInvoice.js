@@ -125,7 +125,7 @@ class CreateEditInvoice extends React.Component {
                 </Grid>
                 
             </Grid>
-            <Grid container justify="center" spacing={4} alignItems='center' style={{ margin: '0.5em' }}>
+            <Grid container justify="center" alignItems='center'>
                 <Grid item xs={12} md={6} lg={3} >
                     <form onSubmit={(e) => this.onSubmit(e)}>
                         <Card style={{ padding: '1em' }}>
@@ -268,9 +268,9 @@ class CreateEditInvoice extends React.Component {
                                 variant="contained"
                                 color="primary"
                                 onClick={(e) => this.OnSubmitSave(e)}>
-                                <Typography variant="button" gutterBottom className="logintypography">
+                                
                                     {!this.props.invoice ? "Save" : "Edit Invoice"}
-                                </Typography>
+                                
                             </Button>
                             <Button
                                 style={{ marginTop: "1em" }}
@@ -278,9 +278,9 @@ class CreateEditInvoice extends React.Component {
                                 variant="contained"
                                 color="primary"
                                 onClick={(e) => this.OnSubmitSend(e)}>
-                                <Typography variant="button" gutterBottom className="logintypography">
+                                
                                     Send Now
-                                </Typography>
+                                
                             </Button>
 
                             

@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { ResponsiveBar } from '@nivo/bar'
 import { showGraph } from '../store/actions/invoices';
 import { connect } from 'react-redux';
+import PaymentFeed from '../components/PaymentFeed';
 
 class Dashboard extends React.Component {
     componentDidMount() {
@@ -11,7 +12,7 @@ class Dashboard extends React.Component {
 
     render() {
         return <React.Fragment>
-            <Grid container justify='center' >
+            <Grid container justify='center' spacing={2}>
                 <Grid item lg={8} xs={12}>
                     <div style={{ height: '80vh', width: '100%', marginLeft: '2em'}}>
                         <ResponsiveBar
@@ -46,7 +47,7 @@ class Dashboard extends React.Component {
                     </div>
                 </Grid>
                 <Grid item lg={4} xs={12} style={{ minHeight: 300 }}>
-
+                    <PaymentFeed />
                 </Grid>
             </Grid>
             <Grid container>

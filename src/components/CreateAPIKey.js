@@ -1,7 +1,6 @@
 import React from 'react';
 import { createAPIKey } from '../store/actions/api_keys';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
 import Card from '@material-ui/core/Card';
@@ -23,23 +22,24 @@ export class CreateAPIKey extends React.Component {
 
     render() {
 
-        return <Grid container spacing={24}>
+        return <Grid container>
             <Grid item xs={6}>
-                <Card>
+                <Card style={{ padding: '1em' }}>
                     <form onSubmit={this.OnSubmit}>
-                        <FormGroup row>
+                        <FormGroup fullwidth='true'>
                             <TextField id="nickname"
                                 label="Nickname"
+                                variant="outlined"
+                                margin="normal"
+                                fullwidth='true'
                                 onChange={(e) => this.setState({ nickname: e.target.value })} />
                         </FormGroup>
                         
                         <Button type="submit"
-                            variant="raised"
+                            variant="contained"
                             color="primary"
                             onClick={this.OnSubmit}>
-                            <Typography variant="button" gutterBottom className="logintypography">
                                 Create API Key
-                            </Typography>
                         </Button>
                     </form>
                 </Card>
