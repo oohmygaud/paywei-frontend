@@ -1,9 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import palette from '../theme/palette'
-import { baseURL } from '../store/api';
-import Card from '@material-ui/core/Card';
 require('prismjs');
 require('prismjs/components/prism-bash')
 require('prismjs/themes/prism-okaidia.css');
@@ -38,7 +35,7 @@ class LandingPage extends React.Component {
           </h1>
           <h2>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />
-            In full or in payments
+            Full or partial payments
           </h2>
           <h2>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />

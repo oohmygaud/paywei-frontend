@@ -19,8 +19,56 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Link } from 'react-router-dom';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 
 const ETH_PRICE = 303
+
+let LineItem = (item) => {
+    return <Grid container spacing={1}>
+        <Grid item xs={1}>
+            <TextField
+                id="order"
+                value={item.order}
+                variant="outlined"
+                margin="normal"
+                disabled
+                fullWidth
+                label="Item"
+            />
+        </Grid>
+        <Grid item xs={5}>
+            <TextField
+                id="title"
+                variant="outlined"
+                margin="normal"
+                defaultValue={item.title}
+                fullWidth
+                label="Title"
+            />
+        </Grid>
+        <Grid item xs={1}>
+            <TextField
+                    id="quantity"
+                    defaultValue={item.quantity === undefined ? 1 : item.quantity}
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    label="Count"     
+            />
+        </Grid>
+        <Grid item xs={3}>
+            <TextField
+                    id="price_in_wei"
+                    defaultValue={item.price}
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    label="Price in Wei"
+            />
+        </Grid>
+        <a onClick={item.remove}>Remove This</a>
+    </Grid>
+}
 
 class CreateEditInvoice extends React.Component {
     state = {
@@ -33,10 +81,9 @@ class CreateEditInvoice extends React.Component {
         total_usd_due: "",
         min_payment_threshold: 100,
         delivery: "email",
+        line_items: [],
         copied: false
     }
-
-
 
     handleDateChange(date) {
         this.setState({ due_date: date })
@@ -67,8 +114,6 @@ class CreateEditInvoice extends React.Component {
             console.log('Creating', form_data)
             this.props.createInvoice(form_data);
         }
-
-
     };
 
     OnSubmitSave(e) {
@@ -83,6 +128,25 @@ class CreateEditInvoice extends React.Component {
         }
 
     };
+
+    addItem(e) {
+        e.preventDefault();
+        const line_items = this.state.line_items;
+        const order = line_items.length ? line_items[line_items.length - 1].order + 1 : 1
+        line_items.push({order, key: Math.random()})
+        this.setState({line_items})
+    }
+
+    removeItem(e, idx) {
+        e.preventDefault();
+        const line_items = this.state.line_items;
+        line_items.splice(idx, 1);
+        line_items.map((item, idx) => {
+            item.order = idx+1;
+        })
+        
+        this.setState({line_items})
+    }
 
     static getDerivedStateFromProps(nextProps, state) {
         const defaultState = { id: nextProps.invoice && nextProps.invoice.id }
@@ -103,7 +167,6 @@ class CreateEditInvoice extends React.Component {
             return defaultState;
         }
     }
-
 
     componentDidMount() {
         this.props.clearDetails()
@@ -141,18 +204,17 @@ class CreateEditInvoice extends React.Component {
                                     <MenuItem value={'link'}>Send as a Link</MenuItem>
                                 </Select>
                             </FormControl>
-
-                            <FormGroup >
+                            
                                 <TextField
                                     id="title"
-                                    defaultValue={this.state.title}
                                     variant="outlined"
                                     margin="normal"
+                                    fullWidth
+                                    defaultValue={this.state.title}
                                     label="Title"
                                     onChange={(e) => this.setState({ title: e.target.value })}
                                 />
-                            </FormGroup>
-
+                            
                             <FormControl margin="normal" variant="outlined" style={{ display: 'flex' }}>
                                 <InputLabel>
                                     Pay To
@@ -168,20 +230,19 @@ class CreateEditInvoice extends React.Component {
 
                                 </Select>
                             </FormControl>
-
-                            <FormGroup >
                                 <TextField
                                     id="recipient_email"
                                     variant="outlined"
                                     margin="normal"
+                                    fullWidth
                                     defaultValue={this.state.recipient_email}
                                     label="Recipient Email"
                                     onChange={(e) => this.setState({ recipient_email: e.target.value })}
                                 />
-                            </FormGroup>
+                            
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>
-                                    <FormGroup>
+                                    
                                         <TextField
                                             id="total_usd_due"
                                             fullWidth
@@ -195,11 +256,11 @@ class CreateEditInvoice extends React.Component {
                                                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
                                             }}
                                         />
-                                    </FormGroup>
+                                    
 
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <FormGroup>
+                                    
                                         <TextField
                                             id="total_ether_due"
                                             fullWidth
@@ -213,7 +274,7 @@ class CreateEditInvoice extends React.Component {
                                                 startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
                                             }}
                                         />
-                                    </FormGroup>
+                                    
                                 </Grid>
                             </Grid>
                             <FormGroup>
@@ -250,19 +311,37 @@ class CreateEditInvoice extends React.Component {
                                     showMonthDropdown
                                 />
                             </FormGroup>
-                            <FormGroup>
+                            
                                 <TextField
                                     id="notes"
                                     defaultValue={this.state.notes}
                                     label="Notes"
                                     variant="outlined"
                                     margin="normal"
+                                    fullWidth
                                     onChange={(e) => this.setState({ notes: e.target.value })}
                                 />
-                            </FormGroup>
-
-
+                            
+                        </Card>
+                        <Card style={{ marginTop: '1em', padding: '1em' }}>
+                            <h3>Invoice Line Items</h3>
+                            {this.state.line_items.map((item, idx) => {
+                                return <LineItem {...item}
+                                            key={item.key}
+                                            remove={(e) => this.removeItem(e, idx)}
+                                        />
+                            })}
+                            
                             <Button
+                                color="primary"
+                                style={{ marginTop: "1em" }}
+                                onClick={(e) => this.addItem(e)}
+                            >
+                                <AddCircleOutline />
+                            </Button>
+                        
+                        </Card>
+                        <Button
                                 style={{ marginTop: "1em", marginRight: "1em" }}
                                 type="submit"
                                 variant="contained"
@@ -282,10 +361,6 @@ class CreateEditInvoice extends React.Component {
                                     Send Now
                                 
                             </Button>
-
-                            
-
-                        </Card>
                     </form>
                 </Grid>
 

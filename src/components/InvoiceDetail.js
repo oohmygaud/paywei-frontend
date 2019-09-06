@@ -197,11 +197,13 @@ class InvoiceDetail extends React.Component {
                                 style={{ marginTop: "1em" }}
                                 onClick={(e) => this.props.archive(this.props.invoice.id)} >
                                 <ArchiveIcon />Archive
-                                    </Button>
+                            </Button>
                             :
-                            <Button color="secondary" onClick={(e) => this.props.unarchive(this.props.invoice.id)} >
+                            <Button
+                                color="secondary"
+                                onClick={(e) => this.props.unarchive(this.props.invoice.id)} >
                                 <UnarchiveIcon />Unarchive
-                                    </Button>
+                            </Button>
 
                         : null}
                 </Grid>
