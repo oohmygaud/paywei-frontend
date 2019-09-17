@@ -22,6 +22,11 @@ export const publicNavs = [
         icon:<HomeIcon/>
     },
     {
+        url:'/request_money',
+        name:'Request Money',
+        icon:<ReceiptIcon />
+    },
+    {
         url:'/send_invoice',
         name:'Send an Invoice',
         icon:<DraftsIcon />

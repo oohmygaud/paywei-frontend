@@ -22,6 +22,10 @@ export default (state = {}, action) => {
         
         case 'LOAD_PAYMENTS_SUCCEEDED':
             return { ...state, payments: action.data };
+
+        case 'LOAD_CURRENCIES_SUCCEEDED':
+            console.log('GOT CURRENCIES', action.data)
+            return { ...state, currencies: action.data };
     
         default: return state;
     }

@@ -117,6 +117,19 @@ function* showGraph(action) {
     }
 }
 
+function* loadCurrencies(action) {
+    try {
+        const api = getApi()
+        let url = 'currencies/?';
+        console.log(action)
+        const response = yield call(api.get, url)
+        yield put({ type: "LOAD_CURRENCIES_SUCCEEDED", data: response.data })
+    }
+    catch (e) {
+        console.log('Error loading currencies', e)
+    }
+}
+
 
 function* InvoiceSaga() {
     yield takeLatest("LOAD_INVOICES", loadInvoiceList);
@@ -128,6 +141,7 @@ function* InvoiceSaga() {
     yield takeLatest("AGREE_TO_INVOICE", agreeToInvoice);
     yield takeLatest("SHOW_GRAPH", showGraph);
     yield takeLatest("LOAD_PAYMENT_LIST", loadPaymentList);
+    yield takeLatest("LOAD_CURRENCIES", loadCurrencies);
 }
 
 export default InvoiceSaga;

@@ -107,9 +107,9 @@ class WhitelistAddress extends React.Component {
             <Grid item xs={12} lg={6}>
                 <Card style={{ padding: '1em' }}>
                     <form onSubmit={(e) => this.onSubmit(e)}>
-                        <h1>
-                            Whitelist Addresses
-                        </h1>
+                        <h3>
+                            My Addresses
+                        </h3>
 
                         <Table>
                             <TableBody>

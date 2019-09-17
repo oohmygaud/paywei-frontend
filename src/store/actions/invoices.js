@@ -43,3 +43,7 @@ export const showGraph = (data) => ({
     data
 });
 
+export const loadCurrencies = () => ({
+    type: 'LOAD_CURRENCIES'
+});
+

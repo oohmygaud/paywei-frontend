@@ -20,55 +20,10 @@ import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Link } from 'react-router-dom';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import RemoveCircle from '@material-ui/icons/RemoveCircle';
+import Divider from '@material-ui/core/Divider';
 
 const ETH_PRICE = 303
-
-let LineItem = (item) => {
-    return <Grid container spacing={1}>
-        <Grid item xs={1}>
-            <TextField
-                id="order"
-                value={item.order}
-                variant="outlined"
-                margin="normal"
-                disabled
-                fullWidth
-                label="Item"
-            />
-        </Grid>
-        <Grid item xs={5}>
-            <TextField
-                id="title"
-                variant="outlined"
-                margin="normal"
-                defaultValue={item.title}
-                fullWidth
-                label="Title"
-            />
-        </Grid>
-        <Grid item xs={1}>
-            <TextField
-                    id="quantity"
-                    defaultValue={item.quantity === undefined ? 1 : item.quantity}
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    label="Count"     
-            />
-        </Grid>
-        <Grid item xs={3}>
-            <TextField
-                    id="price_in_wei"
-                    defaultValue={item.price}
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    label="Price in Wei"
-            />
-        </Grid>
-        <a onClick={item.remove}>Remove This</a>
-    </Grid>
-}
 
 class CreateEditInvoice extends React.Component {
     state = {
@@ -133,7 +88,7 @@ class CreateEditInvoice extends React.Component {
         e.preventDefault();
         const line_items = this.state.line_items;
         const order = line_items.length ? line_items[line_items.length - 1].order + 1 : 1
-        line_items.push({order, key: Math.random()})
+        line_items.push({order, key: Math.random(), title:'', quantity:1, price_in_wei:0})
         this.setState({line_items})
     }
 
@@ -144,7 +99,12 @@ class CreateEditInvoice extends React.Component {
         line_items.map((item, idx) => {
             item.order = idx+1;
         })
-        
+        this.setState({line_items})
+    }
+
+    onChangeLineItem(idx, field, value) {
+        const line_items = this.state.line_items;
+        line_items[idx][field] = value;
         this.setState({line_items})
     }
 
@@ -189,7 +149,7 @@ class CreateEditInvoice extends React.Component {
                 
             </Grid>
             <Grid container justify="center" alignItems='center'>
-                <Grid item xs={12} md={6} lg={3} >
+                <Grid item xs={12} md={6} lg={4} >
                     <form onSubmit={(e) => this.onSubmit(e)}>
                         <Card style={{ padding: '1em' }}>
 
@@ -326,15 +286,69 @@ class CreateEditInvoice extends React.Component {
                         <Card style={{ marginTop: '1em', padding: '1em' }}>
                             <h3>Invoice Line Items</h3>
                             {this.state.line_items.map((item, idx) => {
-                                return <LineItem {...item}
-                                            key={item.key}
-                                            remove={(e) => this.removeItem(e, idx)}
-                                        />
+                                return <div key={item.key}>
+                                    <div>
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={2} sm={1} md={2} lg={1}>
+                                            <TextField
+                                                id="order"
+                                                value={item.order}
+                                                variant="outlined"
+                                                margin="normal"
+                                                disabled
+                                            />
+                                        </Grid>
+                                        <Grid item xs={10} sm={4}>
+                                            <TextField
+                                                id="title"
+                                                variant="outlined"
+                                                margin="normal"
+                                                fullWidth
+                                                value={item.title}
+                                                onChange={(e) => this.onChangeLineItem(idx, 'title', e.target.value)}
+                                                label="Title"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={2}>
+                                            <TextField
+                                                    id="quantity"
+                                                    value={item.quantity === undefined ? 1 : item.quantity}
+                                                    variant="outlined"
+                                                    margin="normal"
+                                                    onChange={(e) => this.onChangeLineItem(idx, 'quantity', e.target.value)}
+                                                    label="#"     
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6} sm={3}>
+                                            <TextField
+                                                    id="price_in_wei"
+                                                    value={item.price}
+                                                    variant="outlined"
+                                                    margin="normal"
+                                                    onChange={(e) => this.onChangeLineItem(idx, 'price_in_wei', e.target.value)}
+                                                    label="Price in Wei"
+                                            />
+                                        </Grid>
+                                            <Button
+                                                color="secondary"
+                                                style={{ marginTop: "0.5em", marginRight: '0.5em' }}
+                                                onClick={(e) => this.removeItem(e, idx)}
+                                            >
+                                                <RemoveCircle />
+                                            </Button>
+                                            <Divider variant="middle" />
+                                    </Grid>
+                                    </div>
+                                    <div>
+                                    <Divider light />
+                                    </div>
+
+                                    </div>
+                                        
                             })}
                             
                             <Button
                                 color="primary"
-                                style={{ marginTop: "1em" }}
                                 onClick={(e) => this.addItem(e)}
                             >
                                 <AddCircleOutline />
