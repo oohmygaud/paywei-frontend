@@ -129,7 +129,7 @@ function* loadWhitelist(action) {
             url += 'status=' + action.status
         }
         const response = yield call(api.get, url)
-        yield put({ type: "LOAD_WHITELIST_SUCCEEDED", data: response.data })
+        yield put({ type: "LOAD_WHITELIST_SUCCEEDED", data: response.data, status: action.status })
     }
     catch (e) {
         console.log('Error loading whitelist addresses', e)

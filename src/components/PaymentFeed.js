@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import TimeAgo from 'timeago-react';
 import _ from 'lodash';
+import {renderMicroValue} from '../utils/formatting';
 
 class PaymentFeed extends React.Component {
   componentWillMount() {
@@ -23,7 +24,7 @@ class PaymentFeed extends React.Component {
             <CardContent>
               <CheckCircleIcon />
               <TimeAgo datetime={payment.created_at} />
-              <br /> {payment.amount_in_wei/10E18} ETH {payment.status} 
+              <br /> {renderMicroValue(payment.amount, 18)} {payment.currency_data.symbol} {payment.status} 
               <br /> FROM {payment.from_address} <br />
             </CardContent>
           </Card>

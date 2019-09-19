@@ -11,13 +11,7 @@ export const PublicRoute = ({
 }) => (
 
 
-    <Route {...rest} component={(props) => (
-      isAuthenticated ? (
-
-          <Redirect to="/" />
-        
-      ) : (
-        
+    <Route {...rest} component={(props) => (        
         <React.Fragment>
          <Header/>
          
@@ -28,8 +22,8 @@ export const PublicRoute = ({
            <Footer/>
       </React.Fragment>
         )
-    )} />
-  );
+    } />
+  )
 
 const mapStateToProps = (state) => ({
   isAuthenticated: !!state.auth.username

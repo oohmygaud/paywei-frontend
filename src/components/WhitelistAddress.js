@@ -11,11 +11,15 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TimeAgo from 'timeago-react';
 import ArchiveIcon from '@material-ui/icons/Archive';
+import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Tooltip from '@material-ui/core/Tooltip';
 
 class AddressRowBase extends React.Component {
     state = {
@@ -27,6 +31,23 @@ class AddressRowBase extends React.Component {
 
     handleClose() {
         this.setState({ dialog: false })
+    }
+    renderStatus(status) {
+        if(status == 'pending') {
+            return <Tooltip title='Pending'>
+                <AccessTimeIcon color='secondary'/>
+                </Tooltip>
+        }
+        if(status == 'verified') {
+            return <Tooltip title='Verified'>
+                <CheckCircleIcon color='primary' />
+                </Tooltip>
+        }
+        if(status == 'archived') {
+            return <Tooltip title='Archived'>
+                <BookmarkIcon color='sand' />
+                </Tooltip>
+        }
     }
 
     render() {
@@ -41,37 +62,41 @@ class AddressRowBase extends React.Component {
                 {address.address}
             </TableCell>
             <TableCell>
-                {address.status}
+                {this.renderStatus(address.status)}
             </TableCell>
             <TableCell>
-                <Button
-                    color="secondary"
-                    style={{ marginTop: "1em" }}
-                    onClick={() => this.openDialog()} >
-                    <ArchiveIcon />Archive
-                </Button>
-                <Dialog
-                    open={this.state.dialog}
-                    onClose={(e) => this.handleClose(e)}
-                >
-                    <DialogTitle>{"Are you sure you want to archive this whitelist address?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            If you archive this address, it can no longer be used to receive funds. You can re-verify at any time.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={(e) => this.handleClose(e)} color="primary">
-                            Disagree
+                {address.status != 'archived' ?
+                    <React.Fragment>
+                        <Button
+                            color="secondary"
+                            style={{ marginTop: "1em" }}
+                            onClick={() => this.openDialog()} >
+                            <ArchiveIcon />Archive
                         </Button>
-                        <Button onClick={(e) => {
-                            this.props.archiveAddress(address.id);
-                            this.handleClose(e);
-                        }} color="primary" autoFocus>
-                            Agree
-                    </Button>
-                    </DialogActions>
-                </Dialog>
+                        <Dialog
+                            open={this.state.dialog}
+                            onClose={(e) => this.handleClose(e)}
+                        >
+                            <DialogTitle>{"Are you sure you want to archive this whitelist address?"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    If you archive this address, it can no longer be used to receive funds. You can re-verify at any time.
+                        </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={(e) => this.handleClose(e)} color="primary">
+                                    Disagree
+                        </Button>
+                                <Button onClick={(e) => {
+                                    this.props.archiveAddress(address.id);
+                                    this.handleClose(e);
+                                }} color="primary" autoFocus>
+                                    Agree
+                        </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </React.Fragment>
+                    : null}
             </TableCell>
         </TableRow>
     }

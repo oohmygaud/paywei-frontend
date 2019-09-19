@@ -7,6 +7,7 @@ import { getProfile, editProfile, loadWhitelist } from '../store/actions/auth';
 import { loadCurrencies } from '../store/actions/invoices';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import WhitelistAddress from '../components/WhitelistAddress';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -44,22 +45,38 @@ class ProfilePage extends React.Component {
                 email: nextProps.user.email,
                 first_name: nextProps.user.first_name,
                 last_name: nextProps.user.last_name,
-                default_address: nextProps.user.default_address,
-                default_pricing_currency: nextProps.user.default_pricing_currency
+                default_address: nextProps.user.default_address || '',
+                default_pricing_currency: nextProps.user.default_pricing_currency || ''
             });
         }
     }
 
     render() {
         console.log("rendering", this.state)
-        if (!this.props.user || !this.props.currencies || !this.props.whitelist)
+        if (!this.props.user || !this.props.currencies || !this.props.verified_addresses)
             return <Typography>Loading...</Typography>
 
 
         return <React.Fragment>
-            <h1 style={{ textAlign: 'center' }}>
-                User Settings
-            </h1>
+            <Grid container>
+                <Grid item sm xs={12} style={{ marginTop: '1em' }}>
+                    <Link to={'/dashboard'}><Button>Back to Dashboard</Button></Link>
+                </Grid>
+                <Grid item sm={6} xs={12} style={{ marginTop: '1em', textAlign: 'center' }}>
+                    <h2>User Settings</h2>
+                </Grid>
+                <Grid item sm xs={4} style={{ marginTop: '1em', textAlign: "right" }}>
+                <Button
+                    style={{ marginRight: '1em', marginTop: '1em' }}
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={this.OnSubmit}>
+
+                    Save All Changes
+                </Button>
+                </Grid>
+            </Grid>
             <Grid
                 container
                 justify="center"
@@ -110,17 +127,6 @@ class ProfilePage extends React.Component {
                                     onChange={(e) => this.setState({ last_name: e.target.value })} />
                             </FormGroup>
 
-
-
-                            <Button
-                                style={{ marginRight: '1em', marginTop: '1em' }}
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                onClick={this.OnSubmit}>
-
-                                Update
-                            </Button>
                         </form>
                     </Card>
                 </Grid>
@@ -135,7 +141,7 @@ class ProfilePage extends React.Component {
                                             value={this.state.default_address}
                                             onChange={(e) => this.setState({ default_address: e.target.value })}
                                         >
-                                            {this.props.whitelist.results.map(address => (
+                                            {this.props.verified_addresses.results.map(address => (
                                                 <MenuItem value={address.id} key={address.id}>
                                                     {address.nickname}
                                                 </MenuItem>
@@ -201,7 +207,7 @@ class ProfilePage extends React.Component {
 const mapStateToProps = (state) => ({
     user: state.auth.user,
     currencies: state.invoices.currencies,
-    whitelist: state.auth.whitelist
+    verified_addresses: state.auth.whitelist_verified
 });
 
 const mapDispatchToProps = (dispatch) => ({

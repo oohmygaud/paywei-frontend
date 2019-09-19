@@ -1,5 +1,5 @@
 import React from 'react';
-import { editInvoice, createInvoice } from '../store/actions/invoices';
+import { editInvoice, createInvoice, loadCurrencies } from '../store/actions/invoices';
 import { loadWhitelist } from '../store/actions/auth';
 import { loadInvoiceDetail, archiveInvoice, unarchiveInvoice } from '../store/actions/invoices';
 import TextField from '@material-ui/core/TextField';
@@ -32,12 +32,12 @@ class CreateEditInvoice extends React.Component {
         pay_to: "",
         notes: "",
         due_date: null,
-        total_ether_due: "",
-        total_usd_due: "",
+        invoice_amount: "",
         min_payment_threshold: 100,
         delivery: "email",
         line_items: [],
-        copied: false
+        copied: false,
+        currency: ""
     }
 
     handleDateChange(date) {
@@ -73,7 +73,7 @@ class CreateEditInvoice extends React.Component {
 
     OnSubmitSave(e) {
         e.preventDefault();
-        const form_data = { ...this.state, user: this.props.user_id, invoice_amount_wei: window.web3.toWei(this.state.total_ether_due) };
+        const form_data = { ...this.state, user: this.props.user_id, invoice_amount: this.state.invoice_amount };
         if (this.props.match.params.id) {
             console.log('Editing', form_data)
             this.props.editInvoice(this.props.match.params.id, form_data);
@@ -88,7 +88,7 @@ class CreateEditInvoice extends React.Component {
         e.preventDefault();
         const line_items = this.state.line_items;
         const order = line_items.length ? line_items[line_items.length - 1].order + 1 : 1
-        line_items.push({order, key: Math.random(), title:'', quantity:1, price_in_wei:0})
+        line_items.push({order, key: Math.random(), title:'', quantity:1, price:0})
         this.setState({line_items})
     }
 
@@ -115,12 +115,11 @@ class CreateEditInvoice extends React.Component {
         // so fill in all the state values from the props.subscription
         if (nextProps.invoice && nextProps.invoice.id != state.id
             && nextProps.invoice.id == nextProps.match.params.id) {
-            const total_ether_due = window.web3.fromWei(nextProps.invoice.invoice_amount_wei)
+            const invoice_amount = nextProps.invoice.invoice_amount
             return {
                 ...nextProps.invoice,
                 due_date: new Date(nextProps.invoice.due_date),
-                total_ether_due,
-                total_usd_due: total_ether_due * ETH_PRICE
+                invoice_amount
             };
         }
         else {
@@ -131,13 +130,14 @@ class CreateEditInvoice extends React.Component {
     componentDidMount() {
         this.props.clearDetails()
         this.props.loadWhitelist()
+        this.props.loadCurrencies()
         if (this.props.match.params.id)
             this.props.loadInvoiceDetail(this.props.match.params.id)
 
     }
 
     render() {
-        if (!this.props.whitelist || (!this.props.invoice && this.props.match.params.id))
+        if (!this.props.whitelist || !this.props.currencies || (!this.props.invoice && this.props.match.params.id))
             return <Typography>Loading...</Typography>
         let exists = this.props.created || this.props.invoice;
 
@@ -201,40 +201,39 @@ class CreateEditInvoice extends React.Component {
                                 />
                             
                             <Grid container spacing={1}>
+                                
                                 <Grid item xs={6}>
                                     
                                         <TextField
-                                            id="total_usd_due"
+                                            id="invoice_amount"
                                             fullWidth
-                                            value={this.state.total_usd_due}
+                                            value={this.state.invoice_amount}
                                             type="number"
                                             variant="outlined"
                                             margin="normal"
-                                            label="Total USD Due"
-                                            onChange={(e) => this.setState({ total_usd_due: e.target.value, total_ether_due: e.target.value / ETH_PRICE })}
+                                            label="Total Due"
+                                            onChange={(e) => this.setState({ invoice_amount: e.target.value })}
                                             InputProps={{
-                                                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                                startAdornment: <InputAdornment position="start">{this.state.currency == 'd79406c9' ? 'Ξ' : '$'}</InputAdornment>,
                                             }}
                                         />
                                     
-
                                 </Grid>
                                 <Grid item xs={6}>
-                                    
-                                        <TextField
-                                            id="total_ether_due"
-                                            fullWidth
-                                            value={this.state.total_ether_due}
-                                            type="number"
-                                            variant="outlined"
-                                            margin="normal"
-                                            label="Total ETH Due"
-                                            onChange={(e) => this.setState({ total_ether_due: e.target.value, total_usd_due: e.target.value * ETH_PRICE })}
-                                            InputProps={{
-                                                startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
-                                            }}
-                                        />
-                                    
+                                    <FormControl margin='normal' fullWidth>
+                                        <InputLabel>Currency</InputLabel>
+                                            <Select
+                                                value={this.state.currency}
+                                                onChange={(e) => this.setState({ currency: e.target.value })}
+                                            >
+                                            {this.props.currencies.results.map(currency => (
+                                                <MenuItem value={currency.id} key={currency.id}>
+                                                    {currency.title} ({currency.symbol})
+                                                </MenuItem>
+                                            ))}
+                                        
+                                            </Select>
+                                    </FormControl>
                                 </Grid>
                             </Grid>
                             <FormGroup>
@@ -321,14 +320,19 @@ class CreateEditInvoice extends React.Component {
                                         </Grid>
                                         <Grid item xs={6} sm={3}>
                                             <TextField
-                                                    id="price_in_wei"
+                                                    id="price"
                                                     value={item.price}
                                                     variant="outlined"
                                                     margin="normal"
-                                                    onChange={(e) => this.onChangeLineItem(idx, 'price_in_wei', e.target.value)}
-                                                    label="Price in Wei"
+                                                    onChange={(e) => this.onChangeLineItem(idx, 'price', e.target.value)}
+                                                    label="Price"
+                                                    InputProps={{
+                                                        startAdornment: <InputAdornment position='start'>{this.state.currency == 'd79406c9' ? 'Ξ' : '$'}</InputAdornment>
+                                                    }}
                                             />
                                         </Grid>
+                                        
+                                        
                                             <Button
                                                 color="secondary"
                                                 style={{ marginTop: "0.5em", marginRight: '0.5em' }}
@@ -391,7 +395,8 @@ const mapStateToProps = (state) => ({
     user_id: state.auth.user_id,
     invoice: state.invoices.detail,
     created: state.invoices.created,
-    whitelist: state.auth.whitelist
+    whitelist: state.auth.whitelist,
+    currencies: state.invoices.currencies,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -402,6 +407,7 @@ const mapDispatchToProps = (dispatch) => ({
     loadInvoiceDetail: (id) => dispatch(loadInvoiceDetail(id)),
     clearDetails: () => dispatch({ type: 'CLEAR_INVOICE_DETAILS' }),
     loadWhitelist: () => dispatch(loadWhitelist('verified')),
+    loadCurrencies: () => dispatch(loadCurrencies()),
     
 });
 

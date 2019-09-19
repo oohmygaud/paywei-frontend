@@ -14,6 +14,7 @@ import Card from '@material-ui/core/Card';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import moment from 'moment';
+import {renderMicroValue} from '../utils/formatting';
 
 class InvoiceList extends React.Component {
     state = {
@@ -102,7 +103,7 @@ class InvoiceList extends React.Component {
                                     </Link>
                                 </TableCell>
                                 <TableCell>
-                                    {moment(invoice.due_date).format('lll')}
+                                    {moment(invoice.due_date).calendar()}
                                 </TableCell>
                                 <TableCell>
                                     <Link to={"/pay/" + invoice.id}>
@@ -113,7 +114,7 @@ class InvoiceList extends React.Component {
                                     {invoice.status}
                                 </TableCell>
                                 <TableCell>
-                                    {window.web3.fromWei(invoice.invoice_amount_wei)} ETH
+                                    {renderMicroValue(invoice.invoice_amount, 18)} {invoice.currency_data.symbol}
                                 </TableCell>
                             </TableRow>
                         ))}

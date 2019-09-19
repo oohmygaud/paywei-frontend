@@ -32,25 +32,15 @@ export const publicNavs = [
         icon:<DraftsIcon />
     },
     {
+        url:'/invoices',
+        name:'Invoices',
+        icon:<DescriptionIcon />
+    },
+    {
         url:'/profile',
         name:'Profile',
         icon:<AccountIcon />
     },
-    {
-        url:'/invoices',
-        name:'Invoices',
-        icon:<DescriptionIcon />
-    },  
-    {
-        url:'/api_keys',
-        name:'API Keys',
-        icon:<VpnKeyIcon />
-    },
-    {
-        url:'/billing',
-        name:'Billing',
-        icon:<ReceiptIcon />
-    }, 
     // add new Nav links here as a json object, in this file the public navigations
 ];
 

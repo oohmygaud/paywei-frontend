@@ -1,6 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { loadInvoiceDetail, editInvoice, archiveInvoice, unarchiveInvoice } from '../store/actions/invoices';
+import { 
+            loadInvoiceDetail,
+            editInvoice,
+            archiveInvoice,
+            unarchiveInvoice,
+            loadCurrencies
+        } 
+        from '../store/actions/invoices';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
@@ -14,7 +21,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import UnarchiveIcon from '@material-ui/icons/Unarchive';
-
+import moment from 'moment'
+import {renderMicroValue} from '../utils/formatting';
 
 let StatusCard = ({ invoice, publishNow }) => {
     if (invoice.delivery == 'email' && invoice.status == 'new')
@@ -102,6 +110,7 @@ class InvoiceDetail extends React.Component {
 
     componentWillMount() {
         this.props.loadInvoiceDetail(this.props.match.params.id)
+        this.props.loadCurrencies()
     }
 
     publishNow() {
@@ -134,27 +143,27 @@ class InvoiceDetail extends React.Component {
             <Grid container justify="center" alignItems='center' >
                 <Grid item xs={12} md={6} lg={4} style={{ textAlign: 'center', padding: '2em' }}>
                     <Card>
-                        <h2>{this.props.invoice.title} Details</h2>
+                        <h2>{this.props.invoice.title}</h2>
                         <Grid container style={{ textAlign: 'center', paddingTop: '2em' }}>
                             <Grid item xs={4}>
-                                {this.props.invoice.invoice_amount_wei}
+                                {renderMicroValue(this.props.invoice.invoice_amount, 18)}
                             </Grid>
                             <Grid item xs={4}>
-                                12
+                                {renderMicroValue(this.props.invoice.paid_amount, 18)}
                             </Grid>
                             <Grid item xs={4}>
-                                1000
+                                {renderMicroValue(this.props.invoice.amount_due)}
                             </Grid>
                         </Grid>
                         <Grid container style={{ textAlign: 'center', paddingTop: '0.5em', paddingBottom: '2em' }}>
                             <Grid item xs={4}>
-                                Total (USD)
-                            </Grid>
-                            <Grid item xs={4}>
-                                Total (COIN)
+                                Total {this.props.invoice.currency_data.symbol}
                             </Grid>
                             <Grid item xs={4}>
                                 Paid
+                            </Grid>
+                            <Grid item xs={4}>
+                                Amount Due
                             </Grid>
                         </Grid>
                         <Grid container style={{ padding: '2em' }}>
@@ -170,11 +179,11 @@ class InvoiceDetail extends React.Component {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Currency</TableCell>
-                                        <TableCell>ETH</TableCell>
+                                        <TableCell>{this.props.currency}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Created At</TableCell>
-                                        <TableCell>{this.props.invoice.created_at}</TableCell>
+                                        <TableCell>{moment(this.props.invoice.created_at).calendar()}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Notes</TableCell>
@@ -215,6 +224,7 @@ class InvoiceDetail extends React.Component {
 
 const mapStateToProps = (state) => ({
     invoice: state.invoices.detail,
+    currencies: state.invoices.currencies,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -222,6 +232,7 @@ const mapDispatchToProps = (dispatch) => ({
     editInvoice: (id, data) => dispatch(editInvoice(id, data)),
     archive: (id) => dispatch(archiveInvoice(id)),
     unarchive: (id) => dispatch(unarchiveInvoice(id)),
+    loadCurrencies: () => dispatch(loadCurrencies()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvoiceDetail);

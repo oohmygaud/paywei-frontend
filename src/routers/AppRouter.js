@@ -7,9 +7,6 @@ import PublicRoute from './PublicRouter';
 import PrivateRoute from './PrivateRouter';
 import LoginPage from '../components/LoginPage';
 import { ConnectedRouter } from 'connected-react-router'
-import APIKeyPage from '../components/APIKeyPage';
-import APIKeyDetail from '../components/APIKeyDetail';
-import CreateAPIKey from '../components/CreateAPIKey';
 import ProfilePage from '../components/ProfilePage';
 import Registration from '../components/Registration';
 import LearnMore from '../components/LearnMore';
@@ -32,9 +29,6 @@ const AppRouter = ({history}) => (
          <PrivateRoute path="/dashboard" component={Dashboard} />
          <PrivateRoute path="/pay/:id" component={MakePaymentPage} />
          <PrivateRoute path="/profile" component={ProfilePage} />
-         <PrivateRoute path="/api_keys/create" component={CreateAPIKey} />
-         <PrivateRoute path="/api_keys/:id" component={APIKeyDetail} />
-         <PrivateRoute path="/api_keys" component={APIKeyPage} />
          <PrivateRoute path="/invoices/:id/edit" component={CreateEditInvoice} />
          <PrivateRoute path="/send_invoice" component={CreateEditInvoice} />
          <PrivateRoute path="/invoices/:id" component={InvoiceDetail} />
