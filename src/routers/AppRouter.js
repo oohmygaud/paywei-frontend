@@ -20,7 +20,6 @@ import RequestMoney from '../components/RequestMoney';
 
 const AppRouter = ({history}) => (
   <ConnectedRouter history={history}>
-    <div>
       
       <Switch>
         
@@ -45,7 +44,6 @@ const AppRouter = ({history}) => (
         <Route component={NotFoundPage} />
       </Switch>
       
-    </div>
   </ConnectedRouter>
 );
 

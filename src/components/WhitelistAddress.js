@@ -130,7 +130,7 @@ class WhitelistAddress extends React.Component {
         return <React.Fragment>
 
             <Grid item xs={12} lg={6}>
-                <Card style={{ padding: '1em' }}>
+                <Card style={{ padding: '1em', overflow: 'auto' }} >
                     <form onSubmit={(e) => this.onSubmit(e)}>
                         <h3>
                             My Addresses

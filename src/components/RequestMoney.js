@@ -88,7 +88,7 @@ class RequestMoney extends React.Component {
                 </Grid>
             </Grid>
             <Grid container justify="center" alignItems='center'>
-                <Grid item xs={12} md={6} lg={3} >
+                <Grid item xs={12} sm={6} lg={3} >
                     <form onSubmit={(e) => this.onSubmit(e)}>
                         <Card style={{ padding: '1em' }}>
                             <TextField

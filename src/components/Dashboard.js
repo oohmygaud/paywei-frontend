@@ -14,7 +14,7 @@ class Dashboard extends React.Component {
         return <React.Fragment>
             <Grid container justify='center' spacing={2}>
                 <Grid item lg={8} xs={12}>
-                    <div style={{ height: '80vh', width: '100%', marginLeft: '2em'}}>
+                    <div style={{ height: '80vh', width: '100%'}}>
                         <ResponsiveBar
                             data={this.props.graph ? this.props.graph.payments_by_day : []}
                             keys={['ETH']}

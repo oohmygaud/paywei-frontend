@@ -18,21 +18,21 @@ class LandingPage extends React.Component {
   render() {
 
     let heroStyle = {
-      background: 'url(/gplaypattern.png'
+      background: 'url(gplaypattern.png)'
     }
 
     return <React.Fragment>
-
-      <Grid
+    <br />
+    <Grid
         container
-        spacing={4}
-        style={{ paddingTop: '6em', paddingBottom: '6em' }}
         justify='center'
       >
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6}>
+          <div style={{padding: '1em', textAlign: 'center'}}>
           <h1>
-            Invoices made easy
+            Invoices <br /> made easy
           </h1>
+          <br />
           <h2>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />
             Full or partial payments
@@ -63,38 +63,32 @@ class LandingPage extends React.Component {
               Register
             </Button>
           </Link>
+          </div>
         </Grid>
 
-        <Grid item xs={12} sm={4} style={{ background: "url(/gplaypattern.png)" }}>
+        <Grid item xs={12} sm={6} style={{ background: "url(/gplaypattern.png)" }}>
 
         </Grid>
       </Grid>
-
+      <br />
 
       <Grid
         container
-        spacing={4}
-        style={{ paddingTop: '6em', paddingBottom: '6em' }}
         justify='center'
       >
-        <Grid item xs={12} sm={4}>
-          <img src={invoice_sample} />
-        </Grid>
-
-        <Grid item xs={12} sm={4}>
-          <h1 style={{ textAlign: 'center' }}>
-            PayWei
-          </h1>
-
+        <Grid item xs={12} lg={4}>
+          <center>
+            <img src={invoice_sample} style={{maxWidth: '90vw'}} />
+          </center>
         </Grid>
 
 
       </Grid>
 
+      <br />
 
 
-
-      <Grid container spacing={8} justify="center">
+      <Grid container justify="center">
         <Grid item sm={3} style={{ textAlign: 'center' }}>
           <div>
             <WebIcon style={{ fontSize: 100 }} />
@@ -129,7 +123,9 @@ class LandingPage extends React.Component {
           </div>
         </Grid>
       </Grid>
+      <br />
 
+     
     </React.Fragment>
 
   }

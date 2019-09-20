@@ -23,6 +23,7 @@ import ArchiveIcon from '@material-ui/icons/Archive';
 import UnarchiveIcon from '@material-ui/icons/Unarchive';
 import moment from 'moment'
 import {renderMicroValue} from '../utils/formatting';
+import QRCode from 'qrcode.react';
 
 let StatusCard = ({ invoice, publishNow }) => {
     if (invoice.delivery == 'email' && invoice.status == 'new')
@@ -55,6 +56,7 @@ let StatusCard = ({ invoice, publishNow }) => {
             <h4 style={{ display: 'inline-block', color: 'white' }}>
                 Copy link here: <br />https://PayWei.co/pay/{invoice.id}
             </h4>
+            <QRCode value={'https://PayWei.co/pay/'+ invoice.id} />
             <CopyToClipboard
                 text={'https://PayWei.co/pay/' + invoice.id}
                 onCopy={() => this.setState({ copied: true })}>
@@ -64,7 +66,7 @@ let StatusCard = ({ invoice, publishNow }) => {
             </CopyToClipboard>
         </Card>
 
-    if (invoice.delivery == 'link' && invoice.status != 'paid')
+    if (invoice.delivery == 'link' && invoice.status != 'paid_in_full' && invoice.status != 'partial_payment')
         return <Card style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
             <h2 style={{ color: 'white' }}>
                 Copy the link & Send your invoice!
@@ -72,7 +74,6 @@ let StatusCard = ({ invoice, publishNow }) => {
             <h4 style={{ display: 'inline-block', color: 'white' }}>
                 https://PayWei.co/pay/{invoice.id}
             </h4>
-            <br />
             <CopyToClipboard
                 text={'https://PayWei.co/pay/' + invoice.id}
                 onCopy={() => this.setState({ copied: true })}>
@@ -80,7 +81,35 @@ let StatusCard = ({ invoice, publishNow }) => {
                     <FileCopyIcon />
                 </Button>
             </CopyToClipboard>
+            <br />
+            <QRCode value={'https://PayWei.co/pay/'+ invoice.id} />
         </Card>
+
+    if (invoice.status == 'partial_payment')
+    return <Card style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
+        <h2 style={{ color: 'white' }}>
+            Copy the link & Send your invoice!
+        </h2>
+        <h4 style={{ display: 'inline-block', color: 'white' }}>
+            https://PayWei.co/pay/{invoice.id}
+        </h4>
+        <CopyToClipboard
+            text={'https://PayWei.co/pay/' + invoice.id}
+            onCopy={() => this.setState({ copied: true })}>
+            <Button color='primary' variant='contained' style={{ margin: '1.5em' }}>
+                <FileCopyIcon />
+            </Button>
+        </CopyToClipboard>
+        <br />
+        <QRCode value={'https://PayWei.co/pay/'+ invoice.id} />
+    </Card>
+
+    if (invoice.status == 'paid_in_full')
+    return <Card style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
+        <h2 style={{ color: 'white' }}>
+            This invoice has been paid.
+        </h2>
+    </Card>
 
     if (invoice.status == 'agreed')
         return <Card style={{ background: palette.blue, padding: '1em', textAlign: 'center' }}>
@@ -90,8 +119,11 @@ let StatusCard = ({ invoice, publishNow }) => {
             <h4 style={{ display: 'inline-block', color: 'white' }}>
                 Cannot make changes to this invoice.
             </h4>
+            <br />
+            <QRCode value={'https://PayWei.co/pay/'+ invoice.id} />
+            <br />
             <h4 style={{ display: 'inline-block', color: 'white' }}>
-                Copy link here: <br />https://PayWei.co/pay/{invoice.id}
+                https://PayWei.co/pay/{invoice.id}
             </h4>
             <CopyToClipboard
                 text={'https://PayWei.co/pay/' + invoice.id}
@@ -142,7 +174,7 @@ class InvoiceDetail extends React.Component {
             </Grid>
             <Grid container justify="center" alignItems='center' >
                 <Grid item xs={12} md={6} lg={4} style={{ textAlign: 'center', padding: '2em' }}>
-                    <Card>
+                    <Card style={{ overflow: 'auto' }}>
                         <h2>{this.props.invoice.title}</h2>
                         <Grid container style={{ textAlign: 'center', paddingTop: '2em' }}>
                             <Grid item xs={4}>
