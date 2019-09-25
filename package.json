@@ -57,6 +57,6 @@
     "webpack-merge": "^4.2.1"
   },
   "devDependencies": {
-    "url-loader": "^1.0.1",
+    "url-loader": "^1.0.1"
   }
 }
