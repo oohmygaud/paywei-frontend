@@ -10,7 +10,6 @@ import WebIcon from '@material-ui/icons/Web';
 import ChildFriendlyIcon from '@material-ui/icons/ChildFriendly';
 import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
-import invoice_sample from '../../public/invoice_sample.png'
 
 class LandingPage extends React.Component {
   state = {
@@ -26,7 +25,7 @@ class LandingPage extends React.Component {
       <div style={{ background: 'url(/gplaypattern.png)'}}>
     <Grid container justify='center'>
         <Grid item xs={12} sm={4}>
-          <h1 style={{ textAlign: 'center', marginTop: '2em' }}>
+          <h1 style={{ textAlign: 'center', marginTop: '4em' }}>
             Invoices made easy
           </h1>
           <br />
@@ -56,11 +55,10 @@ class LandingPage extends React.Component {
         </Grid>
 
         <Grid item xs={12} sm={4}>
-          <img style={{ maxHeight: '70%'}}src={'/createInvoice.png'}></img>
+          <img style={{ marginTop: '3em', maxHeight: '70%'}}src={'/createInvoice.png'}></img>
         </Grid>
       </Grid>
       </div>
-      <br />
 
       <Grid
         container

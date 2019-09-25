@@ -4,9 +4,9 @@ export default () => (
 
   <div className="footer-container-box">
 
-    <h3>
-      NetProphet Technology
-    </h3>
+    <h2 style={{ color: 'white' }}>
+      &copy; NetProphet Technologies 2019, All Rights Reserved
+    </h2>
 
 
   </div>
