@@ -31,15 +31,15 @@ class LandingPage extends React.Component {
           <br />
           <h2 style={{ textAlign:'center' }}>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />
-            Full or partial payments
+            Unified Payment Management
           </h2>
           <h2 style={{ textAlign:'center' }}>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />
-            Invoice for any cryptocurrency
+            Accept ETH or DAI Payments
           </h2>
           <h2 style={{ textAlign:'center' }}>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />
-            Fast, easy, and immutable
+            Fast, Easy, and Immutable
           </h2>
           <br />
           <center>
@@ -79,10 +79,10 @@ class LandingPage extends React.Component {
           <div>
             <WebIcon style={{ fontSize: 100 }} />
             <h3>
-              One benefit
+              Payments Management
             </h3>
             <p>
-              Something good to brag about
+              See all your Ethereum payments in one place
             </p>
           </div>
         </Grid>
@@ -93,7 +93,7 @@ class LandingPage extends React.Component {
               Easy to Use
             </h3>
             <p>
-              Don't install web3, don't run a node, just subscribe.
+              Send invoices and receive payments in ETH or DAI
             </p>
           </div>
         </Grid>
@@ -101,10 +101,10 @@ class LandingPage extends React.Component {
           <div>
             <MoneyOffIcon style={{ fontSize: 100 }} />
             <h3>
-              Not free in Beta
+              Free For Basic Use
             </h3>
             <p>
-              And you can send us beer money!
+              Non-commercial accounts enjoy no usage limits!
             </p>
           </div>
         </Grid>
