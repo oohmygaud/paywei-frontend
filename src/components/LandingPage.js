@@ -6,10 +6,10 @@ require('prismjs');
 require('prismjs/components/prism-bash')
 require('prismjs/themes/prism-okaidia.css');
 import { Link } from 'react-router-dom';
-import WebIcon from '@material-ui/icons/Web';
-import ChildFriendlyIcon from '@material-ui/icons/ChildFriendly';
+import PaymentIcon from '@material-ui/icons/Payment';
 import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import InsertEmoticon from '@material-ui/icons/InsertEmoticon';
 
 class LandingPage extends React.Component {
   state = {
@@ -23,9 +23,9 @@ class LandingPage extends React.Component {
 
     return <React.Fragment>
       <div style={{ background: 'url(/gplaypattern.png)'}}>
-    <Grid container justify='center' spacing={2} alignItems='center'>
+    <Grid container justify='center' alignItems='center'>
         <Grid item xs={12} sm={6}>
-          <h1 style={{ textAlign: 'center', marginTop: '1em' }}>
+          <h1 style={{ textAlign: 'center' }}>
             Invoices made easy
           </h1>
           <br />
@@ -63,7 +63,7 @@ class LandingPage extends React.Component {
       <Grid container justify="center">
         <Grid item sm={3} style={{ textAlign: 'center', marginTop: '2em' }}>
           <div>
-            <WebIcon style={{ fontSize: 100 }} />
+            <PaymentIcon style={{ fontSize: 100 }} />
             <h3>
               Payments Management
             </h3>
@@ -74,7 +74,7 @@ class LandingPage extends React.Component {
         </Grid>
         <Grid item sm={3} style={{ textAlign: 'center', marginTop: '2em' }}>
           <div>
-            <ChildFriendlyIcon style={{ fontSize: 100 }} />
+            <InsertEmoticon style={{ fontSize: 100 }} />
             <h3>
               Easy to Use
             </h3>

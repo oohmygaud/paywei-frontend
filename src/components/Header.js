@@ -26,7 +26,6 @@ class Header extends React.Component {
 
   handleChange = (value) => this.setState({ value });
   onLeftIconButtonClick = () => {
-    console.log('hi;');
     this.setState({ open: !this.state.open });
 
   };
