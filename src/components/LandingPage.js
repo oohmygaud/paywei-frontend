@@ -23,9 +23,9 @@ class LandingPage extends React.Component {
 
     return <React.Fragment>
       <div style={{ background: 'url(/gplaypattern.png)'}}>
-    <Grid container justify='center'>
-        <Grid item xs={12} sm={4}>
-          <h1 style={{ textAlign: 'center', marginTop: '4em' }}>
+    <Grid container justify='center' spacing={2} alignItems='center'>
+        <Grid item xs={12} sm={6}>
+          <h1 style={{ textAlign: 'center', marginTop: '1em' }}>
             Invoices made easy
           </h1>
           <br />
@@ -54,28 +54,14 @@ class LandingPage extends React.Component {
           </center>
         </Grid>
 
-        <Grid item xs={12} sm={4}>
-          <img style={{ marginTop: '3em', maxHeight: '70%'}}src={'/createInvoice.png'}></img>
+        <Grid item xs={12} sm={6}>
+          <img style={{ marginTop: '1em', maxHeight: '100%', maxWidth: '95%', align:'middle' }}src={'/createInvoice.png'}></img>
         </Grid>
       </Grid>
       </div>
 
-      <Grid
-        container
-        justify='center'
-      >
-        <Grid item xs={12} lg={4}>
-
-        </Grid>
-
-
-      </Grid>
-
-      <br />
-
-
       <Grid container justify="center">
-        <Grid item sm={3} style={{ textAlign: 'center' }}>
+        <Grid item sm={3} style={{ textAlign: 'center', marginTop: '2em' }}>
           <div>
             <WebIcon style={{ fontSize: 100 }} />
             <h3>
@@ -86,7 +72,7 @@ class LandingPage extends React.Component {
             </p>
           </div>
         </Grid>
-        <Grid item sm={3} style={{ textAlign: 'center' }}>
+        <Grid item sm={3} style={{ textAlign: 'center', marginTop: '2em' }}>
           <div>
             <ChildFriendlyIcon style={{ fontSize: 100 }} />
             <h3>
@@ -97,7 +83,7 @@ class LandingPage extends React.Component {
             </p>
           </div>
         </Grid>
-        <Grid item sm={3} style={{ textAlign: 'center' }}>
+        <Grid item sm={3} style={{ textAlign: 'center', marginTop: '2em' }}>
           <div>
             <MoneyOffIcon style={{ fontSize: 100 }} />
             <h3>
