@@ -140,6 +140,8 @@ class CreateEditInvoice extends React.Component {
         if (!this.props.whitelist || !this.props.currencies || (!this.props.invoice && this.props.match.params.id))
             return <Typography>Loading...</Typography>
         let exists = this.props.created || this.props.invoice;
+        const selected_currency = this.props.currencies.by_id[this.state.currency];
+
 
         return <React.Fragment>
             <Grid container>
@@ -214,7 +216,7 @@ class CreateEditInvoice extends React.Component {
                                             label="Total Due"
                                             onChange={(e) => this.setState({ invoice_amount: e.target.value })}
                                             InputProps={{
-                                                startAdornment: <InputAdornment position="start">{this.state.currency == 'd79406c9' ? 'Ξ' : '$'}</InputAdornment>,
+                                                startAdornment: <InputAdornment position="start">{selected_currency && selected_currency.symbol == 'ETH' ? 'Ξ' : '$'}</InputAdornment>,
                                             }}
                                         />
                                     

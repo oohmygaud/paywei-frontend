@@ -1,3 +1,4 @@
+import _ from 'lodash';
 export default (state = {}, action) => {
     switch (action.type) {
 
@@ -24,8 +25,8 @@ export default (state = {}, action) => {
             return { ...state, payments: action.data };
 
         case 'LOAD_CURRENCIES_SUCCEEDED':
-            console.log('GOT CURRENCIES', action.data)
-            return { ...state, currencies: action.data };
+            let currencies = {...action.data, by_id: _.keyBy(action.data.results, 'id')}
+            return { ...state, currencies };
     
         default: return state;
     }

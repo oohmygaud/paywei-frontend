@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
 require('prismjs');
 require('prismjs/components/prism-bash')
 require('prismjs/themes/prism-okaidia.css');
@@ -18,58 +19,47 @@ class LandingPage extends React.Component {
   render() {
 
     let heroStyle = {
-      background: 'url(gplaypattern.png)'
+      background: 'url(/gplaypattern.png)'
     }
 
     return <React.Fragment>
-    <br />
-    <Grid
-        container
-        justify='center'
-      >
-        <Grid item xs={12} sm={6}>
-          <div style={{padding: '1em', textAlign: 'center'}}>
-          <h1>
-            Invoices <br /> made easy
+      <div style={{ background: 'url(/gplaypattern.png)'}}>
+    <Grid container justify='center'>
+        <Grid item xs={12} sm={4}>
+          <h1 style={{ textAlign: 'center', marginTop: '2em' }}>
+            Invoices made easy
           </h1>
           <br />
-          <h2>
+          <h2 style={{ textAlign:'center' }}>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />
             Full or partial payments
           </h2>
-          <h2>
+          <h2 style={{ textAlign:'center' }}>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />
             Invoice for any cryptocurrency
           </h2>
-          <h2>
+          <h2 style={{ textAlign:'center' }}>
             <AddCircleOutline style={{ marginRight: '0.5em', verticalAlign: 'middle' }} />
             Fast, easy, and immutable
           </h2>
-          <Link to={'/learn_more'}>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginRight: '1em', marginTop: '2em' }}
-            >
-              Learn More
-            </Button>
-          </Link>
+          <br />
+          <center>
           <Link to={'/registration'}>
             <Button
               variant="contained"
               color="secondary"
-              style={{ marginLeft: '1em', marginTop: '2em' }}
             >
               Register
             </Button>
           </Link>
-          </div>
+          </center>
         </Grid>
 
-        <Grid item xs={12} sm={6} style={{ background: "url(/gplaypattern.png)" }}>
-
+        <Grid item xs={12} sm={4}>
+          <img style={{ maxHeight: '70%'}}src={'/createInvoice.png'}></img>
         </Grid>
       </Grid>
+      </div>
       <br />
 
       <Grid
@@ -77,9 +67,7 @@ class LandingPage extends React.Component {
         justify='center'
       >
         <Grid item xs={12} lg={4}>
-          <center>
-            <img src={invoice_sample} style={{maxWidth: '90vw'}} />
-          </center>
+
         </Grid>
 
 

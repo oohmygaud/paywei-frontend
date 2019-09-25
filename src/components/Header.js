@@ -88,9 +88,11 @@ class Header extends React.Component {
               >
                 <MenuIcon />
               </IconButton>
-              <h2 variant="title" color="inherit" className="headertypoclass" >
-                <Link to='/dashboard'>PayWei</Link>
-              </h2>
+              <span variant="title" color="inherit" style={{flex: 1}}>
+                <Link to='/dashboard'>
+                  <img src={'/payweilogo1.svg.png'} style={{ maxWidth: '60px'}} />
+                </Link>
+              </span>
 
               <Typography>
                 {this.props.username}

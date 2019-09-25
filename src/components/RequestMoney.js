@@ -81,6 +81,8 @@ class RequestMoney extends React.Component {
         if (!this.props.currencies || !this.props.user || !this.props.whitelist) {
             return <Typography>Loading...</Typography>
         }
+        const selected_currency = this.props.currencies.by_id[this.state.currency];
+
         return <React.Fragment>
             <Grid container>
                 <Grid item sm xs={12} style={{ marginTop: '1em' }}>
@@ -112,7 +114,7 @@ class RequestMoney extends React.Component {
                                         label="Total Due"
                                         onChange={(e) => this.setState({ invoice_amount: e.target.value })} 
                                         InputProps={{
-                                            startAdornment: <InputAdornment position='start'>{this.state.currency == 'd79406c9' ? 'Ξ' : '$'}</InputAdornment>
+                                            startAdornment: <InputAdornment position='start'>{selected_currency && selected_currency.symbol == 'ETH' ? 'Ξ' : '$'}</InputAdornment>
                                         }}
                                     />
                                 </Grid>
