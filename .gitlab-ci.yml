@@ -19,3 +19,4 @@ deploy:
    stage: deploy
    script:
      - aws s3 sync --acl public-read ./public s3://paywei.co
+     - aws cloudfront create-invalidation --distribution-id E2KTX6MNBG4PCF --paths='/*'
