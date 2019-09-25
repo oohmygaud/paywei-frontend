@@ -1,0 +1,21 @@
+build site:
+  image: node:10
+  stage: build
+  script:
+    - yarn config set cache-folder /cache/yarn
+    - yarn install
+    - yarn build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - public
+
+deploy:
+   image:
+     name: robpco/awscli
+     entrypoint:
+       - '/usr/bin/env'
+       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+   stage: deploy
+   script:
+     - aws s3 sync --acl public-read ./public s3://paywei.co
