@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Slider from '@material-ui/lab/Slider';
+import Slider from '@material-ui/core/Slider';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import Divider from '@material-ui/core/Divider';
+import {renderMicroValue} from '../utils/formatting'
 
 const ETH_PRICE = 303
 
@@ -59,21 +60,14 @@ class CreateEditInvoice extends React.Component {
     }
 
     OnSubmitSend(e) {
-        e.preventDefault();
-        const form_data = { ...this.state, user: this.props.user_id, status: 'published' };
-
-        if (this.props.match.params.id) {
-            console.log('Editing', form_data)
-            this.props.editInvoice(this.props.match.params.id, form_data);
-        } else {
-            console.log('Creating', form_data)
-            this.props.createInvoice(form_data);
-        }
+        this.OnSubmitSave(e, {status: 'published'})
     };
 
-    OnSubmitSave(e) {
+    OnSubmitSave(e, extra_data) {
         e.preventDefault();
-        const form_data = { ...this.state, user: this.props.user_id, invoice_amount: this.state.invoice_amount };
+        const selected_currency = this.props.currencies.by_id[this.state.currency];
+
+        const form_data = { ...this.state, user: this.props.user_id, invoice_amount: this.state.invoice_amount * (10**selected_currency.decimal_places), ...extra_data};
         if (this.props.match.params.id) {
             console.log('Editing', form_data)
             this.props.editInvoice(this.props.match.params.id, form_data);
@@ -113,9 +107,10 @@ class CreateEditInvoice extends React.Component {
 
         // If this is an edit page, we'll have props.subscription
         // so fill in all the state values from the props.subscription
-        if (nextProps.invoice && nextProps.invoice.id != state.id
+        if (nextProps.invoice && nextProps.currencies && nextProps.invoice.id != state.id
             && nextProps.invoice.id == nextProps.match.params.id) {
-            const invoice_amount = nextProps.invoice.invoice_amount
+            const selected_currency = nextProps.currencies.by_id[nextProps.invoice.currency];
+            const invoice_amount = renderMicroValue(nextProps.invoice.invoice_amount, selected_currency.decimal_places);
             return {
                 ...nextProps.invoice,
                 due_date: new Date(nextProps.invoice.due_date),

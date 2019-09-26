@@ -71,7 +71,7 @@ class ProfilePage extends React.Component {
                     type="submit"
                     variant="contained"
                     color="primary"
-                    onClick={this.OnSubmit}>
+                    onClick={(e) => this.onSubmit(e)}>
 
                     Save All Changes
                 </Button>

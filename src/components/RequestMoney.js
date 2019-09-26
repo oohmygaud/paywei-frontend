@@ -55,7 +55,8 @@ class RequestMoney extends React.Component {
 
     OnSubmitSave(e) {
         e.preventDefault();
-        const form_data = { ...this.state, user: this.props.user_id, invoice_amount: this.state.invoice_amount };
+        const selected_currency = this.props.currencies.by_id[this.state.currency];
+        const form_data = { ...this.state, user: this.props.user_id, invoice_amount: this.state.invoice_amount * 10**selected_currency.decimal_places };
         console.log('Creating', form_data)
         this.props.createInvoice(form_data);
     };
@@ -209,9 +210,7 @@ class RequestMoney extends React.Component {
                                 variant="contained"
                                 color="primary"
                                 onClick={(e) => this.OnSubmitSave(e)}>
-                                
-                                    {!this.props.invoice ? "Save" : "Edit Invoice"}
-                                
+                                Save
                             </Button>
                             <Button
                                 style={{ marginTop: "1em" }}
