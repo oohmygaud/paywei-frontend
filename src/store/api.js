@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const baseURL = (process.env.NODE_ENV !== 'production') ? 'http://localhost:9000/' : 'https://api.paywei.io/'
+export const baseURL = (process.env.NODE_ENV !== 'production') ? 'http://localhost:9000/' : 'https://api.paywei.co/'
 
 export const getApi = () => {
     const token = localStorage.getItem('authToken');
