@@ -102,7 +102,7 @@ class InvoiceList extends React.Component {
                                     </Link>
                                 </TableCell>
                                 <TableCell>
-                                    {moment(invoice.due_date).calendar()}
+                                    {invoice.due_date ? moment(invoice.due_date).calendar() : '-'}
                                 </TableCell>
                                 <TableCell>
                                     {invoice.status}
