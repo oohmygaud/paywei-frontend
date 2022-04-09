@@ -32,7 +32,7 @@
     "file-loader": "^1.1.11",
     "fusioncharts": "^3.12.2",
     "material-ui-image": "^3.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "prismjs": "^1.16.0",
     "qrcode.react": "^0.9.3",
     "react": "^16.8.0",
